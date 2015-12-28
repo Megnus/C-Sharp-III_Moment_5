@@ -1,4 +1,5 @@
-﻿// Drawing Polylines and Plygons.
+﻿using System;
+// Drawing Polylines and Plygons.
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -61,6 +62,15 @@ namespace DiagramGenerator
             polygon.Visibility = Visibility.Collapsed;
             polygon.Visibility = Visibility.Collapsed;
             filledPolygon.Visibility = Visibility.Visible;
+        }
+
+        private void btnAddPoint_Click(object sender, RoutedEventArgs e)
+        {
+            polyline.Visibility = Visibility.Visible;
+            Random r = new Random();
+            int i = r.Next(0, 100);
+            int j = r.Next(0, 100);
+            points.Add(new Point(i, j));
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿<Window x:Class="DiagramGenerator.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Draw diagram" Height="479" Width="838" Name="mainWindow">
+        Title="Draw diagram" Height="522" Width="838" Name="mainWindow">
     <Grid>
+        <!-- http://wpftutorial.net/DockPanel.html -->
         <DockPanel>
             <Menu x:Name="mainMenu" DockPanel.Dock="Top">
                 <MenuItem Header="_File">
@@ -18,36 +19,47 @@
                 <MenuItem Header="Remove" />
             </Menu>
             <StackPanel  Orientation="Horizontal" Background="WhiteSmoke" DockPanel.Dock="Right" HorizontalAlignment="Left">
-                <Canvas x:Name="drawCanvas" Background="White" MouseDown="drawCanvas_MouseDown" Width="569" HorizontalAlignment="Left">
+                <Canvas x:Name="drawCanvas" Background="White" MouseDown="drawCanvas_MouseDown" Width="480" HorizontalAlignment="Left">
                     <Polyline x:Name="polyline" Stroke="Black" Visibility="Collapsed"/>
                     <Polygon x:Name="polygon" Stroke="Black" Visibility="Collapsed"/>
                     <Polygon x:Name="filledPolygon" Fill="DarkBlue" Visibility="Collapsed"/>
                 </Canvas>
             </StackPanel>
-            <StackPanel  Width="262" Orientation="Horizontal" Background="WhiteSmoke" DockPanel.Dock="Left" HorizontalAlignment="Left">
-                <Grid Width="261">
+            <StackPanel  Width="350" Orientation="Horizontal" Background="WhiteSmoke" DockPanel.Dock="Left" HorizontalAlignment="Left">
+                <Grid Width="350">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <GroupBox Grid.Row="0" Header="Settings">
+                    <GroupBox Grid.Row="0" Header="Settings" Margin="0,0,0,10">
                         <!--<StackPanel>-->
-                        <Grid Height="250">
-                            <RadioButton Name="lineRadio1" Content="Polyline" Margin="5,5,5,0" Checked="lineRadio_Checked" Height="24" VerticalAlignment="Top"/>
-                            <RadioButton Name="polygonRadio1" Content="Polygon" Margin="5" Checked="polygonRadio_Checked"/>
-                            <RadioButton Name="filledPolygonRadio1" Content="Filled Polygon" Margin="5" Checked="filledPolygonRadio_Checked"/>
-                            <Button x:Name="clearButton2" Content="Ok" Click="clearButton_Click" Margin="5,215,129,5"/>
-                            <Button Name="clearButton1" Content="Cancel" Click="clearButton_Click" Margin="124,215,10,5"/>
+                        <Grid Margin="10,10,0,20" >
+                            <Label Content="Number of devisions" Margin="10,40,202,0"/>
+                            <Label Content="Interval value" Margin="10,70,202,0"/>
+
+                            <Button x:Name="clearButton2" Content="Ok" Click="clearButton_Click" Margin="23,117,176,-2" Height="34" VerticalAlignment="Top"/>
+                            <Button Name="clearButton1" Content="Cancel" Click="clearButton_Click" Margin="161,117,0,0" RenderTransformOrigin="0.693,0.5" Height="34" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130"/>
+                            <TextBox HorizontalAlignment="Left" Height="23" Margin="146,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="73"/>
+                            <TextBox HorizontalAlignment="Left" Height="23" Margin="238,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="68"/>
+                            <TextBox HorizontalAlignment="Left" Height="23" Margin="146,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="73"/>
+                            <TextBox HorizontalAlignment="Left" Height="23" Margin="238,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="68"/>
+                            <Label Content="x - axis" Margin="149,10,122,109"/>
+                            <Label Content="y - axis" Margin="240,10,22,108"/>
                             <!--</StackPanel>-->
                         </Grid>
                     </GroupBox>
-                    <GroupBox Grid.Row="1" Header="Add point">
-                        <StackPanel>
-                            <RadioButton Name="lineRadio" Content="Polyline" Margin="5" Checked="lineRadio_Checked"/>
-                            <RadioButton Name="polygonRadio" Content="Polygon" Margin="5" Checked="polygonRadio_Checked"/>
-                            <RadioButton Name="filledPolygonRadio" Content="Filled Polygon" Margin="5" Checked="filledPolygonRadio_Checked"/>
-                            <Button Name="clearButton" Content="Clear" Click="clearButton_Click" Margin="5"/>
-                        </StackPanel>
+                    <GroupBox Grid.Row="1" Header="Add point" Height ="250" Margin="0,0,0,0">
+                        <Grid Margin="10,10,0,10" >
+                            <Label Content="x - coordinate" Margin="10,16,240,164"/>
+                            <Label Content="y - coordinate" Margin="10,44,240,136"/>
+                            <TextBox HorizontalAlignment="Left" Height="23" Margin="93,21,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+                            <TextBox HorizontalAlignment="Left" Height="23" Margin="93,49,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+                            <Button Content="Ok" Click="btnAddPoint_Click" Margin="10,88,161,0" Height="34" VerticalAlignment="Top"/>
+                            <ListBox HorizontalAlignment="Left" Height="155" Margin="205,38,0,0" VerticalAlignment="Top" Width="100"/>
+                            <Label Content="Points" Margin="230,5,48,175"/>
+                            <Button Content="Clear diagram" Click="clearButton_Click" Margin="10,140,161,0" Height="34" VerticalAlignment="Top"/>
+
+                        </Grid>
                     </GroupBox>
 
                 </Grid>
