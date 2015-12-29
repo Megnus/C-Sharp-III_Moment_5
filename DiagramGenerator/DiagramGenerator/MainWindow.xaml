@@ -20,6 +20,7 @@
             </Menu>
             <StackPanel  Orientation="Horizontal" Background="WhiteSmoke" DockPanel.Dock="Right" HorizontalAlignment="Left">
                 <Canvas x:Name="drawCanvas" Background="White" MouseDown="drawCanvas_MouseDown" Width="480" HorizontalAlignment="Left">
+                    <Line x:Name="line" Stroke="Blue" Visibility="Visible"/>
                     <Polyline x:Name="polyline" Stroke="Black" Visibility="Collapsed"/>
                     <Polygon x:Name="polygon" Stroke="Black" Visibility="Collapsed"/>
                     <Polygon x:Name="filledPolygon" Fill="DarkBlue" Visibility="Collapsed"/>
@@ -34,8 +35,8 @@
                     <GroupBox Grid.Row="0" Header="Settings" Margin="0,0,0,10">
                         <!--<StackPanel>-->
                         <Grid Margin="10,10,0,20" >
-                            <Label Content="Number of devisions" Margin="10,40,202,0"/>
-                            <Label Content="Interval value" Margin="10,70,202,0"/>
+                            <Label Content="Number of devisions" Margin="10,40,202,85"/>
+                            <Label Content="Interval value" Margin="10,70,202,57"/>
 
                             <Button x:Name="clearButton2" Content="Ok" Click="clearButton_Click" Margin="23,117,176,-2" Height="34" VerticalAlignment="Top"/>
                             <Button Name="clearButton1" Content="Cancel" Click="clearButton_Click" Margin="161,117,0,0" RenderTransformOrigin="0.693,0.5" Height="34" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130"/>
@@ -43,8 +44,8 @@
                             <TextBox HorizontalAlignment="Left" Height="23" Margin="238,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="68"/>
                             <TextBox HorizontalAlignment="Left" Height="23" Margin="146,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="73"/>
                             <TextBox HorizontalAlignment="Left" Height="23" Margin="238,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="68"/>
-                            <Label Content="x - axis" Margin="149,10,122,109"/>
-                            <Label Content="y - axis" Margin="240,10,22,108"/>
+                            <Label Content="x - axis" Margin="149,10,122,118"/>
+                            <Label Content="y - axis" Margin="240,10,22,119"/>
                             <!--</StackPanel>-->
                         </Grid>
                     </GroupBox>

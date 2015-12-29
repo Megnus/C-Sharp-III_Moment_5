@@ -3,6 +3,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace DiagramGenerator
 {
@@ -13,6 +14,7 @@ namespace DiagramGenerator
     {
         // stores the collection of points for the mutisided shapes
         private PointCollection points = new PointCollection();
+        private PointCollection pp = new PointCollection();
 
         // initialize the points of the shapes
         public MainWindow()
@@ -64,6 +66,24 @@ namespace DiagramGenerator
             filledPolygon.Visibility = Visibility.Visible;
         }
 
+        private void DrawCoordinates(int x1, int y1, int x2, int y2)
+        {
+            line.Visibility = Visibility.Visible;
+            Line myLine = new Line();
+
+            myLine.Stroke = System.Windows.Media.Brushes.Black;
+            myLine.SnapsToDevicePixels = true;
+            myLine.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+
+            myLine.X1 = x1;
+            myLine.X2 = x2;
+            myLine.Y1 = y1;
+            myLine.Y2 = y2;
+
+            myLine.StrokeThickness = 1;
+            drawCanvas.Children.Add(myLine);
+        }
+
         private void btnAddPoint_Click(object sender, RoutedEventArgs e)
         {
             polyline.Visibility = Visibility.Visible;
@@ -71,6 +91,8 @@ namespace DiagramGenerator
             int i = r.Next(0, 100);
             int j = r.Next(0, 100);
             points.Add(new Point(i, j));
+            DrawCoordinates(240, 0, 240, 800);
+            DrawCoordinates(0, 240, 500, 240);
         }
     }
 }
