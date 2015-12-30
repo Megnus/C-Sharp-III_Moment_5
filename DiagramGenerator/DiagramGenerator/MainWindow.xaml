@@ -19,7 +19,7 @@
                 <MenuItem Header="Remove" />
             </Menu>
             <StackPanel  Orientation="Horizontal" Background="WhiteSmoke" DockPanel.Dock="Right" HorizontalAlignment="Left">
-                <Canvas x:Name="drawCanvas" Background="White" MouseDown="drawCanvas_MouseDown" Width="480" HorizontalAlignment="Left">
+                <Canvas x:Name="drawCanvas" Background="White" MouseDown="drawCanvas_MouseDown" Width="480" Height="470" HorizontalAlignment="Left">
                     <Line x:Name="line" Stroke="Blue" Visibility="Visible"/>
                     <Polyline x:Name="polyline" Stroke="Black" Visibility="Collapsed"/>
                     <Polygon x:Name="polygon" Stroke="Black" Visibility="Collapsed"/>
@@ -53,10 +53,10 @@
                         <Grid Margin="10,10,0,10" >
                             <Label Content="x - coordinate" Margin="10,16,240,164"/>
                             <Label Content="y - coordinate" Margin="10,44,240,136"/>
-                            <TextBox HorizontalAlignment="Left" Height="23" Margin="93,21,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
-                            <TextBox HorizontalAlignment="Left" Height="23" Margin="93,49,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+                            <TextBox x:Name="xCoord" HorizontalAlignment="Left" Height="23" Margin="93,21,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+                            <TextBox x:Name="yCoord" HorizontalAlignment="Left" Height="23" Margin="93,49,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
                             <Button Content="Ok" Click="btnAddPoint_Click" Margin="10,88,161,0" Height="34" VerticalAlignment="Top"/>
-                            <ListBox HorizontalAlignment="Left" Height="155" Margin="205,38,0,0" VerticalAlignment="Top" Width="100"/>
+                            <ListBox x:Name="lbxPoints" HorizontalAlignment="Left" Height="155" Margin="205,38,0,0" VerticalAlignment="Top" Width="100"/>
                             <Label Content="Points" Margin="230,5,48,175"/>
                             <Button Content="Clear diagram" Click="clearButton_Click" Margin="10,140,161,0" Height="34" VerticalAlignment="Top"/>
 
