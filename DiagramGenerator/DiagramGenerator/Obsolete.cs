@@ -39,9 +39,45 @@ namespace DiagramGenerator
             using (DrawingContext drawingContext = drawingVisual.RenderOpen())
             {
                 drawingContext.DrawRectangle(new SolidColorBrush(Colors.Red), null, new Rect(0, 0, 10, 10));
-            }
+                //}
 
-            buffer.Render(drawingVisual);
+                buffer.Render(drawingVisual);
+            }
         }
+
+        /*
+        // adds a new point when the user clicks on the canvas
+        private void drawCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //add point to collection
+            points.Add(e.GetPosition(drawCanvas));
+        }
+     
+        // when the user selects the Polyline
+        private void lineRadio_Checked(object sender, RoutedEventArgs e)
+        {
+            // Polyline is visible, the other two are not
+            polyline.Visibility = Visibility.Visible;
+            polygon.Visibility = Visibility.Collapsed;
+            filledPolygon.Visibility = Visibility.Collapsed;
+        }
+
+        // when the user selects the Polygon
+        private void polygonRadio_Checked(object sender, RoutedEventArgs e)
+        {
+            // Polygon is visible, the other two are not
+            polyline.Visibility = Visibility.Collapsed;
+            polygon.Visibility = Visibility.Visible;
+            filledPolygon.Visibility = Visibility.Collapsed;
+        }
+
+        // when the user selects the filled Polygon
+        private void filledPolygonRadio_Checked(object sender, RoutedEventArgs e)
+        {
+            // filled Polygon is visible, the other two are not
+            polygon.Visibility = Visibility.Collapsed;
+            polygon.Visibility = Visibility.Collapsed;
+            filledPolygon.Visibility = Visibility.Visible;
+        }*/
     }
 }

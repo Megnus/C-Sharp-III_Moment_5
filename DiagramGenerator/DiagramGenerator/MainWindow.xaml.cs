@@ -18,6 +18,8 @@ namespace DiagramGenerator
     {
         // stores the collection of points for the mutisided shapes
         private PointCollection points = new PointCollection();
+        private PointCollection lbxPointCollection = new PointCollection();
+
         private PointCollection pp = new PointCollection();
         private List<Point> pointList = new List<Point>();
         private Point size, origo;
@@ -26,60 +28,32 @@ namespace DiagramGenerator
         public MainWindow()
         {
             InitializeComponent();
-
+            polyline.Visibility = Visibility.Visible;
             polyline.Points = points; // assing Plyline points
             polygon.Points = points; // assing Plygon points
             filledPolygon.Points = points; // assing filled Plygon points
 
-            lbxPoints.ItemsSource = points;
+            lbxPoints.ItemsSource = lbxPointCollection;
 
             size = new Point(drawCanvas.Width, drawCanvas.Height);
             origo = new Point((int)(size.X / 2), (int)(size.Y / 2));
 
-            DrawCoordinates(origo.X, 0, origo.X, size.Y);
+           /*DrawCoordinates(origo.X, 0, origo.X, size.Y);
             DrawCoordinates(0, origo.Y, size.X, origo.Y);
             Debug.WriteLine(size.X);
-            Debug.WriteLine(size.Y);
-        }
-
-        // adds a new point when the user clicks on the canvas
-        private void drawCanvas_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //add point to collection
-            points.Add(e.GetPosition(drawCanvas));
+            Debug.WriteLine(size.Y);*/
         }
 
         // when the clear Button is clicked
         private void clearButton_Click(object sender, RoutedEventArgs e)
         {
             points.Clear(); // clear the poitns from the collection
-        }
 
-        // when the user selects the Polyline
-        private void lineRadio_Checked(object sender, RoutedEventArgs e)
-        {
-            // Polyline is visible, the other two are not
-            polyline.Visibility = Visibility.Visible;
-            polygon.Visibility = Visibility.Collapsed;
-            filledPolygon.Visibility = Visibility.Collapsed;
-        }
-
-        // when the user selects the Polygon
-        private void polygonRadio_Checked(object sender, RoutedEventArgs e)
-        {
-            // Polygon is visible, the other two are not
-            polyline.Visibility = Visibility.Collapsed;
-            polygon.Visibility = Visibility.Visible;
-            filledPolygon.Visibility = Visibility.Collapsed;
-        }
-
-        // when the user selects the filled Polygon
-        private void filledPolygonRadio_Checked(object sender, RoutedEventArgs e)
-        {
-            // filled Polygon is visible, the other two are not
-            polygon.Visibility = Visibility.Collapsed;
-            polygon.Visibility = Visibility.Collapsed;
-            filledPolygon.Visibility = Visibility.Visible;
+            int noOfDevisionsX = int.Parse(tbxNumDevX.Text);
+            int noOfDevisionsY = int.Parse(tbxNumDevY.Text);
+            int intervalValX = int.Parse(tbxIntervalValX.Text);
+            int intervalValY = int.Parse(tbxIntervalValY.Text);
+            DrawText(noOfDevisionsX, noOfDevisionsY, intervalValX, intervalValY);
         }
 
         private void DrawCoordinates(double x1, double y1, double x2, double y2)
@@ -100,13 +74,8 @@ namespace DiagramGenerator
             drawCanvas.Children.Add(myLine);
         }
 
-        private void DrawText()
+        private void DrawText(int noOfDevisionsX, int noOfDevisionsY, int intervalValX, int intervalValY)
         {
-            int noOfDevisionsX = 12;
-            int noOfDevisionsY = 10;
-            int intervalValX = 1;
-            int intervalValY = 100;
-
             double offsetX = 20;
             for (int i = 0; i <= noOfDevisionsX; i++)
             {
@@ -129,26 +98,39 @@ namespace DiagramGenerator
 
         private void btnAddPoint_Click(object sender, RoutedEventArgs e)
         {
-            int x = int.Parse(xCoord.Text) + (int)origo.X;
-            int y = -int.Parse(yCoord.Text) + (int)origo.Y;
+            int noOfDevisionsX = 12;
+            int noOfDevisionsY = 10;
+            int intervalValX = 1;
+            int intervalValY = 100;
+
+            int offsetX = 20;
+            int offsetY = 20;
+
+            double x = double.Parse(xCoord.Text);
+            double y = double.Parse(yCoord.Text);
+
+            int width = (int)((size.X - offsetX * 2) * x / (intervalValX * noOfDevisionsX)) + offsetX;
+            int top = (int)size.Y - (int)((size.Y - offsetY * 2) * y / (intervalValY * noOfDevisionsY)) - offsetY;
 
             Ellipse ellipse = new Ellipse();
             ellipse.Width = ellipse.Height = 5.0;
             ellipse.Stroke = Brushes.Black;
-            ellipse.SetValue(Canvas.LeftProperty, x - 3.0);
-            ellipse.SetValue(Canvas.TopProperty, y - 3.0);
+            ellipse.SetValue(Canvas.LeftProperty, width - 3.0);
+            ellipse.SetValue(Canvas.TopProperty, top - 3.0);
 
             polyline.Visibility = Visibility.Visible;
             polyline.SnapsToDevicePixels = true;
             polyline.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
-            points.Add(new Point(x, y));
+            points.Add(new Point(width, top));
+            lbxPointCollection.Add(new Point(x, y));
+
             lbxPoints.Items.Refresh();
 
             drawCanvas.Children.Add(ellipse);
-            DrawCoordinates(origo.X, 0, origo.X, size.Y);
-            DrawCoordinates(0, origo.Y, size.X, origo.Y);
-            DrawText();
+            //DrawCoordinates(origo.X, 0, origo.X, size.Y);
+            //DrawCoordinates(0, origo.Y, size.X, origo.Y);
+            //DrawText();
         }
 
         private void Text(double x, double y, string text, Color color)
