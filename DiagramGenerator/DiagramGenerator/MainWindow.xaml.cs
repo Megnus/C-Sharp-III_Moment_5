@@ -76,7 +76,7 @@ namespace DiagramGenerator
 
         private void DrawText(int noOfDevisionsX, int noOfDevisionsY, int intervalValX, int intervalValY)
         {
-            double offsetX = 20;
+            double offsetX = 35;
             for (int i = 0; i <= noOfDevisionsX; i++)
             {
                 double x = offsetX + (size.X - offsetX * 2) / noOfDevisionsX * i;
@@ -84,12 +84,12 @@ namespace DiagramGenerator
                 Text(x, size.Y - offsetX, (i * intervalValX).ToString(), Colors.Black);
             }
 
-            double offsetY = 20;
+            double offsetY = 35;
             for (int i = 0; i <= noOfDevisionsY; i++)
             {
                 double y = offsetY + (size.Y - offsetY * 2) / noOfDevisionsY * i;
                 Debug.WriteLine(y);
-                Text(offsetY, size.Y - y, (i * intervalValY).ToString(), Colors.Black);
+                Text(5, size.Y - y, (i * intervalValY).ToString(), Colors.Black);
             }
 
             DrawCoordinates(offsetX, offsetY, offsetX, size.Y - offsetY);
