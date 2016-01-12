@@ -38,7 +38,7 @@
                             <Label Content="Number of devisions" Margin="10,40,177,85"/>
                             <Label Content="Interval value" Margin="10,70,177,57"/>
 
-                            <Button x:Name="clearButton2" Content="Ok" Click="clearButton_Click" Margin="23,117,176,-2" Height="34" VerticalAlignment="Top"/>
+                            <Button x:Name="btnSettingsOk" Content="Ok" Click="btnSettingsOk_Click" Margin="23,117,176,-2" Height="34" VerticalAlignment="Top"/>
                             <Button Name="clearButton1" Content="Cancel" Click="clearButton_Click" Margin="161,117,0,0" RenderTransformOrigin="0.693,0.5" Height="34" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130"/>
                             <TextBox x:Name="tbxNumDevX" Text="12" HorizontalAlignment="Left" Height="23" Margin="146,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="73"/>
                             <TextBox x:Name="tbxNumDevY" Text="10" HorizontalAlignment="Left" Height="23" Margin="238,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="68"/>

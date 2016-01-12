@@ -48,12 +48,8 @@ namespace DiagramGenerator
         private void clearButton_Click(object sender, RoutedEventArgs e)
         {
             points.Clear(); // clear the poitns from the collection
-
-            int noOfDevisionsX = int.Parse(tbxNumDevX.Text);
-            int noOfDevisionsY = int.Parse(tbxNumDevY.Text);
-            int intervalValX = int.Parse(tbxIntervalValX.Text);
-            int intervalValY = int.Parse(tbxIntervalValY.Text);
-            DrawText(noOfDevisionsX, noOfDevisionsY, intervalValX, intervalValY);
+            drawCanvas.Children.Clear();
+            btnSettingsOk_Click(sender, e);
         }
 
         private void DrawCoordinates(double x1, double y1, double x2, double y2)
@@ -80,7 +76,6 @@ namespace DiagramGenerator
             for (int i = 0; i <= noOfDevisionsX; i++)
             {
                 double x = offsetX + (size.X - offsetX * 2) / noOfDevisionsX * i;
-                Debug.WriteLine(x);
                 Text(x, size.Y - offsetX, (i * intervalValX).ToString(), Colors.Black);
             }
 
@@ -88,7 +83,6 @@ namespace DiagramGenerator
             for (int i = 0; i <= noOfDevisionsY; i++)
             {
                 double y = offsetY + (size.Y - offsetY * 2) / noOfDevisionsY * i;
-                Debug.WriteLine(y);
                 Text(5, size.Y - y, (i * intervalValY).ToString(), Colors.Black);
             }
 
@@ -122,8 +116,12 @@ namespace DiagramGenerator
             polyline.SnapsToDevicePixels = true;
             polyline.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
-            points.Add(new Point(width, top));
+            //points.Add(new Point(width, top));
             lbxPointCollection.Add(new Point(x, y));
+            //points.Add(new Point(width, top));
+
+            CalculatePoint(lbxPointCollection);
+            //polyline.Points = points;
 
             lbxPoints.Items.Refresh();
 
@@ -131,6 +129,29 @@ namespace DiagramGenerator
             //DrawCoordinates(origo.X, 0, origo.X, size.Y);
             //DrawCoordinates(0, origo.Y, size.X, origo.Y);
             //DrawText();
+        }
+
+        private PointCollection CalculatePoint(PointCollection pointCollection)
+        {
+            PointCollection newPointCollection = new PointCollection();
+
+            int noOfDevisionsX = 12;
+            int noOfDevisionsY = 10;
+            int intervalValX = 1;
+            int intervalValY = 100;
+            int offsetX = 20;
+            int offsetY = 20;
+
+            foreach (var p in pointCollection)
+            {
+                Point pp = new Point();
+                pp.X = (int)((size.X - offsetX * 2) * p.X / (intervalValX * noOfDevisionsX)) + offsetX;
+                pp.Y = (int)size.Y - (int)((size.Y - offsetY * 2) * p.Y / (intervalValY * noOfDevisionsY)) - offsetY;
+                points.Add(pp);
+                Debug.WriteLine(p);
+            }
+
+            return newPointCollection;
         }
 
         private void Text(double x, double y, string text, Color color)
@@ -141,6 +162,15 @@ namespace DiagramGenerator
             Canvas.SetLeft(textBlock, x);
             Canvas.SetTop(textBlock, y);
             drawCanvas.Children.Add(textBlock);
+        }
+
+        private void btnSettingsOk_Click(object sender, RoutedEventArgs e)
+        {
+            int noOfDevisionsX = int.Parse(tbxNumDevX.Text);
+            int noOfDevisionsY = int.Parse(tbxNumDevY.Text);
+            int intervalValX = int.Parse(tbxIntervalValX.Text);
+            int intervalValY = int.Parse(tbxIntervalValY.Text);
+            DrawText(noOfDevisionsX, noOfDevisionsY, intervalValX, intervalValY);
         }
     }
 }
