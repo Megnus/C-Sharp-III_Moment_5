@@ -30,8 +30,8 @@ namespace DiagramGenerator
             InitializeComponent();
             polyline.Visibility = Visibility.Visible;
             polyline.Points = points; // assing Plyline points
-            polygon.Points = points; // assing Plygon points
-            filledPolygon.Points = points; // assing filled Plygon points
+            //polygon.Points = points; // assing Plygon points
+            //filledPolygon.Points = points; // assing filled Plygon points
 
             lbxPoints.ItemsSource = lbxPointCollection;
 
@@ -116,9 +116,7 @@ namespace DiagramGenerator
             polyline.SnapsToDevicePixels = true;
             polyline.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
-            //points.Add(new Point(width, top));
             lbxPointCollection.Add(new Point(x, y));
-            //points.Add(new Point(width, top));
 
             CalculatePoint(lbxPointCollection);
             //polyline.Points = points;
@@ -134,11 +132,11 @@ namespace DiagramGenerator
         private PointCollection CalculatePoint(PointCollection pointCollection)
         {
             PointCollection newPointCollection = new PointCollection();
-
-            int noOfDevisionsX = 12;
-            int noOfDevisionsY = 10;
-            int intervalValX = 1;
-            int intervalValY = 100;
+            points.Clear();
+            int noOfDevisionsX = int.Parse(tbxNumDevX.Text);//12;
+            int noOfDevisionsY = int.Parse(tbxNumDevY.Text);//10;
+            int intervalValX = int.Parse(tbxIntervalValX.Text);//1;
+            int intervalValY = int.Parse(tbxIntervalValY.Text);//100;
             int offsetX = 20;
             int offsetY = 20;
 
@@ -166,11 +164,30 @@ namespace DiagramGenerator
 
         private void btnSettingsOk_Click(object sender, RoutedEventArgs e)
         {
+            //points.Clear(); // clear the poitns from the collection
+            drawCanvas.Children.Clear();
+
+            polyline = new Polyline();
+            polyline.Visibility = Visibility.Visible;
+
+            polyline.Stroke = System.Windows.Media.Brushes.Black;
+            polyline.SnapsToDevicePixels = true;
+            polyline.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+
+            polyline.StrokeThickness = 1;
+            drawCanvas.Children.Add(polyline);
+
+            polyline.Visibility = Visibility.Visible;
+            polyline.Points = points;
+
+
+            
             int noOfDevisionsX = int.Parse(tbxNumDevX.Text);
             int noOfDevisionsY = int.Parse(tbxNumDevY.Text);
             int intervalValX = int.Parse(tbxIntervalValX.Text);
             int intervalValY = int.Parse(tbxIntervalValY.Text);
             DrawText(noOfDevisionsX, noOfDevisionsY, intervalValX, intervalValY);
+            CalculatePoint(lbxPointCollection);
         }
     }
 }
