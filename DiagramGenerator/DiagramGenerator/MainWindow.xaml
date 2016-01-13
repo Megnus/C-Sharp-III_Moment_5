@@ -1,7 +1,7 @@
 ﻿<Window x:Class="DiagramGenerator.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Draw diagram" Height="522" Width="838" Name="mainWindow">
+        Title="Draw diagram" Height="522" Width="838" Name="mainWindow" ResizeMode="NoResize">
     <Grid>
         <!-- http://wpftutorial.net/DockPanel.html -->
         <DockPanel>

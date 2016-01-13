@@ -29,19 +29,11 @@ namespace DiagramGenerator
         {
             InitializeComponent();
             polyline.Visibility = Visibility.Visible;
-            polyline.Points = points; // assing Plyline points
-            //polygon.Points = points; // assing Plygon points
-            //filledPolygon.Points = points; // assing filled Plygon points
-
+            polyline.Points = points;
             lbxPoints.ItemsSource = lbxPointCollection;
 
             size = new Point(drawCanvas.Width, drawCanvas.Height);
             origo = new Point((int)(size.X / 2), (int)(size.Y / 2));
-
-           /*DrawCoordinates(origo.X, 0, origo.X, size.Y);
-            DrawCoordinates(0, origo.Y, size.X, origo.Y);
-            Debug.WriteLine(size.X);
-            Debug.WriteLine(size.Y);*/
         }
 
         // when the clear Button is clicked
@@ -49,6 +41,8 @@ namespace DiagramGenerator
         {
             points.Clear(); // clear the poitns from the collection
             drawCanvas.Children.Clear();
+            lbxPointCollection.Clear();
+            lbxPoints.Items.Refresh();
             btnSettingsOk_Click(sender, e);
         }
 
@@ -72,22 +66,24 @@ namespace DiagramGenerator
 
         private void DrawText(int noOfDevisionsX, int noOfDevisionsY, int intervalValX, int intervalValY)
         {
-            double offsetX = 35;
+            double offsetX = (noOfDevisionsY * intervalValY).ToString().Length * 8;
+            double offsetY = 35;
+
             for (int i = 0; i <= noOfDevisionsX; i++)
             {
                 double x = offsetX + (size.X - offsetX * 2) / noOfDevisionsX * i;
-                Text(x, size.Y - offsetX, (i * intervalValX).ToString(), Colors.Black);
+                Text(x, size.Y - offsetY, (i * intervalValX).ToString(), Colors.Black, Double.NaN);
             }
 
-            double offsetY = 35;
+            int len = (noOfDevisionsY * intervalValY).ToString().Length;
             for (int i = 0; i <= noOfDevisionsY; i++)
             {
-                double y = offsetY + (size.Y - offsetY * 2) / noOfDevisionsY * i;
-                Text(5, size.Y - y, (i * intervalValY).ToString(), Colors.Black);
+                double y = offsetY + (size.Y - offsetY * 2) / noOfDevisionsY * i + 10;
+                Text(2, size.Y - y, (i * intervalValY).ToString(), Colors.Black, offsetX  - 5);
             }
 
-            DrawCoordinates(offsetX, offsetY, offsetX, size.Y - offsetY);
-            DrawCoordinates(offsetX, size.Y - offsetY, size.X - offsetX, size.Y - offsetY);
+            DrawCoordinates(offsetX, 10, offsetX, size.Y - offsetY);
+            DrawCoordinates(offsetX, size.Y - offsetY, size.X - 10, size.Y - offsetY);
         }
 
         private void btnAddPoint_Click(object sender, RoutedEventArgs e)
@@ -106,39 +102,26 @@ namespace DiagramGenerator
             int width = (int)((size.X - offsetX * 2) * x / (intervalValX * noOfDevisionsX)) + offsetX;
             int top = (int)size.Y - (int)((size.Y - offsetY * 2) * y / (intervalValY * noOfDevisionsY)) - offsetY;
 
-            Ellipse ellipse = new Ellipse();
-            ellipse.Width = ellipse.Height = 5.0;
-            ellipse.Stroke = Brushes.Black;
-            ellipse.SetValue(Canvas.LeftProperty, width - 3.0);
-            ellipse.SetValue(Canvas.TopProperty, top - 3.0);
-
             polyline.Visibility = Visibility.Visible;
             polyline.SnapsToDevicePixels = true;
             polyline.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
             lbxPointCollection.Add(new Point(x, y));
-
             CalculatePoint(lbxPointCollection);
-            //polyline.Points = points;
 
             lbxPoints.Items.Refresh();
-
-            drawCanvas.Children.Add(ellipse);
-            //DrawCoordinates(origo.X, 0, origo.X, size.Y);
-            //DrawCoordinates(0, origo.Y, size.X, origo.Y);
-            //DrawText();
         }
 
         private PointCollection CalculatePoint(PointCollection pointCollection)
         {
             PointCollection newPointCollection = new PointCollection();
             points.Clear();
-            int noOfDevisionsX = int.Parse(tbxNumDevX.Text);//12;
-            int noOfDevisionsY = int.Parse(tbxNumDevY.Text);//10;
-            int intervalValX = int.Parse(tbxIntervalValX.Text);//1;
-            int intervalValY = int.Parse(tbxIntervalValY.Text);//100;
-            int offsetX = 20;
-            int offsetY = 20;
+            int noOfDevisionsX = int.Parse(tbxNumDevX.Text);
+            int noOfDevisionsY = int.Parse(tbxNumDevY.Text);
+            int intervalValX = int.Parse(tbxIntervalValX.Text);
+            int intervalValY = int.Parse(tbxIntervalValY.Text);
+            int offsetX = 35;
+            int offsetY = 35;
 
             foreach (var p in pointCollection)
             {
@@ -147,14 +130,23 @@ namespace DiagramGenerator
                 pp.Y = (int)size.Y - (int)((size.Y - offsetY * 2) * p.Y / (intervalValY * noOfDevisionsY)) - offsetY;
                 points.Add(pp);
                 Debug.WriteLine(p);
+
+                Ellipse ellipse = new Ellipse();
+                ellipse.Width = ellipse.Height = 5.0;
+                ellipse.Stroke = Brushes.Black;
+                ellipse.SetValue(Canvas.LeftProperty, pp.X - 3.0);
+                ellipse.SetValue(Canvas.TopProperty, pp.Y - 3.0);
+                drawCanvas.Children.Add(ellipse);
             }
 
             return newPointCollection;
         }
 
-        private void Text(double x, double y, string text, Color color)
+        private void Text(double x, double y, string text, Color color, double width)
         {
             TextBlock textBlock = new TextBlock();
+            textBlock.TextAlignment = TextAlignment.Right;
+            textBlock.Width = width;
             textBlock.Text = text;
             textBlock.Foreground = new SolidColorBrush(color);
             Canvas.SetLeft(textBlock, x);
@@ -164,7 +156,6 @@ namespace DiagramGenerator
 
         private void btnSettingsOk_Click(object sender, RoutedEventArgs e)
         {
-            //points.Clear(); // clear the poitns from the collection
             drawCanvas.Children.Clear();
 
             polyline = new Polyline();
@@ -179,8 +170,6 @@ namespace DiagramGenerator
 
             polyline.Visibility = Visibility.Visible;
             polyline.Points = points;
-
-
             
             int noOfDevisionsX = int.Parse(tbxNumDevX.Text);
             int noOfDevisionsY = int.Parse(tbxNumDevY.Text);
