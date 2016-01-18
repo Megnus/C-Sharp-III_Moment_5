@@ -9,6 +9,22 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
+
+/* TODO
+ *      -- Spara data till xml-fil --
+ *      a) Kolla hur man sparar ett objekt till xml
+ *      b) Fixa ett Dataobjekt: settings + points
+ * x    c) Se till att data sparas till detta objekt och att projektet använder objetet
+ *      d) Spara detta objekt 
+ *      e) Öppna detta objekt och ladda in data samt sätt groubox till enable/disable
+ * x    f) Kolla hur man sorterar data baserat på x i point
+ *          pointsOfList = pointsOfList.OrderByDescending(p => p.X).ThenBy(p=>p.y).ToList();
+ *      g) Ändra färger på labels osv. 
+ *      h) Dela upp i flera klasser bla. en calc-class.
+ *      i) Skriv kommentarer och namn och datum på klasserna.
+ *      j) Skicka in lösningen.
+*/
+
 namespace DiagramGenerator
 {
     /// <summary>
@@ -34,6 +50,8 @@ namespace DiagramGenerator
 
             size = new Point(drawCanvas.Width, drawCanvas.Height);
             origo = new Point((int)(size.X / 2), (int)(size.Y / 2));
+
+            WriteXML();
         }
 
         // when the clear Button is clicked
@@ -44,6 +62,10 @@ namespace DiagramGenerator
             lbxPointCollection.Clear();
             lbxPoints.Items.Refresh();
             btnSettingsOk_Click(sender, e);
+            grbSettings.IsEnabled = true;
+            grbAddPoint.IsEnabled = false;
+            txbXcoordinate.Text = string.Empty;
+            txbYcoordinate.Text = string.Empty;
         }
 
         private void DrawCoordinates(double x1, double y1, double x2, double y2)
@@ -51,7 +73,8 @@ namespace DiagramGenerator
             line.Visibility = Visibility.Visible;
             Line myLine = new Line();
 
-            myLine.Stroke = System.Windows.Media.Brushes.Black;
+            //myLine.Stroke = System.Windows.Media.Brushes.Black;
+            myLine.Stroke = System.Windows.Media.Brushes.Blue;
             myLine.SnapsToDevicePixels = true;
             myLine.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
@@ -72,14 +95,14 @@ namespace DiagramGenerator
             for (int i = 0; i <= noOfDevisionsX; i++)
             {
                 double x = offsetX + (size.X - offsetX * 2) / noOfDevisionsX * i;
-                Text(x, size.Y - offsetY, (i * intervalValX).ToString(), Colors.Black, Double.NaN);
+                Text(x, size.Y - offsetY, (i * intervalValX).ToString(), Colors.Blue, Double.NaN);
             }
 
             int len = (noOfDevisionsY * intervalValY).ToString().Length;
             for (int i = 0; i <= noOfDevisionsY; i++)
             {
                 double y = offsetY + (size.Y - offsetY * 2) / noOfDevisionsY * i + 10;
-                Text(2, size.Y - y, (i * intervalValY).ToString(), Colors.Black, offsetX  - 5);
+                Text(2, size.Y - y, (i * intervalValY).ToString(), Colors.Blue, offsetX - 5);
             }
 
             DrawCoordinates(offsetX, 10, offsetX, size.Y - offsetY);
@@ -96,8 +119,8 @@ namespace DiagramGenerator
             int offsetX = 20;
             int offsetY = 20;
 
-            double x = double.Parse(xCoord.Text);
-            double y = double.Parse(yCoord.Text);
+            double x = double.Parse(txbXcoordinate.Text);
+            double y = double.Parse(txbYcoordinate.Text);
 
             int width = (int)((size.X - offsetX * 2) * x / (intervalValX * noOfDevisionsX)) + offsetX;
             int top = (int)size.Y - (int)((size.Y - offsetY * 2) * y / (intervalValY * noOfDevisionsY)) - offsetY;
@@ -133,7 +156,7 @@ namespace DiagramGenerator
 
                 Ellipse ellipse = new Ellipse();
                 ellipse.Width = ellipse.Height = 5.0;
-                ellipse.Stroke = Brushes.Black;
+                ellipse.Stroke = Brushes.Red;
                 ellipse.SetValue(Canvas.LeftProperty, pp.X - 3.0);
                 ellipse.SetValue(Canvas.TopProperty, pp.Y - 3.0);
                 drawCanvas.Children.Add(ellipse);
@@ -156,12 +179,15 @@ namespace DiagramGenerator
 
         private void btnSettingsOk_Click(object sender, RoutedEventArgs e)
         {
+            grbSettings.IsEnabled = false;
+            grbAddPoint.IsEnabled = true;
+
             drawCanvas.Children.Clear();
 
             polyline = new Polyline();
             polyline.Visibility = Visibility.Visible;
 
-            polyline.Stroke = System.Windows.Media.Brushes.Black;
+            polyline.Stroke = System.Windows.Media.Brushes.Red;
             polyline.SnapsToDevicePixels = true;
             polyline.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
 
@@ -170,13 +196,72 @@ namespace DiagramGenerator
 
             polyline.Visibility = Visibility.Visible;
             polyline.Points = points;
-            
+
             int noOfDevisionsX = int.Parse(tbxNumDevX.Text);
             int noOfDevisionsY = int.Parse(tbxNumDevY.Text);
             int intervalValX = int.Parse(tbxIntervalValX.Text);
             int intervalValY = int.Parse(tbxIntervalValY.Text);
             DrawText(noOfDevisionsX, noOfDevisionsY, intervalValX, intervalValY);
             CalculatePoint(lbxPointCollection);
+        }
+
+        /// <summary>
+        /// https://msdn.microsoft.com/en-us/library/ms172873.aspx
+        /// </summary>
+
+        public class DiagramData
+        {
+            public int NumberOfDevisionsX { get; set; }
+
+            public int NumberOfDevisionsY { get; set; }
+
+            public int InterValValueX { get; set; }
+
+            public int InterValValueX { get; set; }
+
+            public PointCollection Points { get; set; }
+        }
+
+
+        public static void WriteXML()
+        {
+            DiagramData overview = new DiagramData();
+            
+            
+            overview.title = "Serialization Overview";
+            overview.Text = "Bla blra bla...";
+
+
+            System.Xml.Serialization.XmlSerializer writer =
+                new System.Xml.Serialization.XmlSerializer(typeof(DiagramData));
+
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "//SerializationOverview.xml";
+            System.IO.FileStream file = System.IO.File.Create(path);
+
+            writer.Serialize(file, overview);
+            file.Close();
+        }
+
+
+        public void ReadXML()
+        {
+            // First write something so that there is something to read ...
+            var b = new DiagramData { title = "Serialization Overview" };
+            var writer = new System.Xml.Serialization.XmlSerializer(typeof(DiagramData));
+            var wfile = new System.IO.StreamWriter(@"c:\temp\SerializationOverview.xml");
+            writer.Serialize(wfile, b);
+            wfile.Close();
+
+            // Now we can read the serialized book ...
+            System.Xml.Serialization.XmlSerializer reader =
+                new System.Xml.Serialization.XmlSerializer(typeof(DiagramData));
+            System.IO.StreamReader file = new System.IO.StreamReader(
+                @"c:\temp\SerializationOverview.xml");
+            DiagramData overview = (DiagramData)reader.Deserialize(file);
+            file.Close();
+
+            Console.WriteLine(overview.title);
+
         }
     }
 }
