@@ -20,8 +20,10 @@
             </Menu>
             <StackPanel  Orientation="Horizontal" Background="WhiteSmoke" DockPanel.Dock="Right" HorizontalAlignment="Left">
                 <Canvas x:Name="drawCanvas" Background="White" Width="480" Height="470" HorizontalAlignment="Left">
+                    
                     <Line x:Name="line" Stroke="Blue" Visibility="Visible"/>
                     <Polyline x:Name="polyline" Stroke="Red" Visibility="Collapsed"/>
+                    
                     <!--
                     <Polygon x:Name="polygon" Stroke="Black" Visibility="Collapsed"/>
                     <Polygon x:Name="filledPolygon" Fill="DarkBlue" Visibility="Collapsed"/>
