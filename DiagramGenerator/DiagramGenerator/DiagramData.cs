@@ -53,6 +53,12 @@ namespace DiagramGenerator
             return newPoint;
         }
 
+        public void ClearPoints()
+        {
+            coordinatePoints.Clear();
+            canvasPoints.Clear();
+        }
+
         public PointCollection GetCanvasPoints()
         {
             return canvasPoints;

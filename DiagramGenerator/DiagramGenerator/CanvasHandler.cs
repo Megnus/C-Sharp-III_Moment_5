@@ -16,44 +16,29 @@ namespace DiagramGenerator
         private DiagramData diagramData;
         private Polyline polyline;
 
-        public CanvasHandler(Canvas canvas, ref DiagramData diagramData)
+        public CanvasHandler(Canvas canvas, DiagramData diagramData)
         {
-
-
             this.canvas = canvas;
             this.diagramData = diagramData;
-
-            //this.diagramData.canvasPoints.Add(new Point(1, 100));
-            //this.diagramData.canvasPoints.Add(new Point(100, 300));
+            CreatePolyLine();
         }
 
-        public void CreatePolyLine(ref Polyline polylinex)
+        private void CreatePolyLine()
         {
-
-
-            this.polyline = polylinex;
-            //polyline = new Polyline();
+            polyline = new Polyline();
             polyline.Visibility = Visibility.Visible;
             polyline.Stroke = System.Windows.Media.Brushes.Red;
             polyline.SnapsToDevicePixels = true;
             polyline.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
             polyline.StrokeThickness = 1;
-            //canvas.Children.Add(polyline);
+            canvas.Children.Add(polyline);
             polyline.Visibility = Visibility.Visible;
-            //polyline.Points = diagramData.GetCanvasPoints();
+            polyline.Points = diagramData.GetCanvasPoints();
         }
 
         public void AddToPolyLine(Point point)
         {
-
-            //this.diagramData.canvasPoints.Add(new Point(1, 100));
-            //this.diagramData.canvasPoints.Add(new Point(100, 300));
-
             diagramData.AddNewPoint(point);
-            //polyline.Points = diagramData.GetCanvasPoints();
-            //canvas.Children.Add(polyline);
-            
-
             Ellipse ellipse = new Ellipse();
             ellipse.Width = ellipse.Height = 5.0;
             ellipse.Stroke = Brushes.Red;
@@ -68,7 +53,6 @@ namespace DiagramGenerator
             diagramData.InterValValueY = intervalValY;
             diagramData.NumberOfDevisionsX = noOfDevisionsX;
             diagramData.NumberOfDevisionsY = noOfDevisionsY;
-
             
             double offsetX = (noOfDevisionsY * intervalValY).ToString().Length * 8;
             double offsetY = 35;
@@ -93,9 +77,6 @@ namespace DiagramGenerator
         private void DrawCoordinates(double x1, double y1, double x2, double y2)
         {
             Line myLine = new Line();
-            //myLine.Visibility = Visibility.Visible;
-
-            //myLine.Stroke = System.Windows.Media.Brushes.Black;
             myLine.Stroke = System.Windows.Media.Brushes.Blue;
             myLine.SnapsToDevicePixels = true;
             myLine.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
@@ -119,6 +100,13 @@ namespace DiagramGenerator
             Canvas.SetLeft(textBlock, x);
             Canvas.SetTop(textBlock, y);
             canvas.Children.Add(textBlock);
+        }
+
+        public void ClearCanvas()
+        {
+            diagramData.ClearPoints();
+            canvas.Children.Clear();
+            CreatePolyLine();
         }
     }
 }
