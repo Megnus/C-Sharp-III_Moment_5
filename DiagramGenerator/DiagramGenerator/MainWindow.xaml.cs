@@ -90,23 +90,28 @@ namespace DiagramGenerator
             tbxNumDevY.Text = diagramData.NumberOfDevisionsY.ToString();
             tbxIntervalValX.Text = diagramData.InterValValueX.ToString();
             tbxIntervalValY.Text = diagramData.InterValValueY.ToString();
-            canvasHandler.ClearCanvas();
-            canvasHandler = new CanvasHandler(drawCanvas, diagramData);
+            btnSettingsOk_Click(sender, e);
             grbSettings.IsEnabled = false;
             grbAddPoint.IsEnabled = true;
+
+            canvasHandler = new CanvasHandler(drawCanvas, diagramData);
         }
 
         private void MenuItem_Save_Click(object sender, RoutedEventArgs e)
         {
-            XmlFileHandler.WriteXML(diagramData);
+            XmlFileHandler.WriteXML(diagramData);   
+        }
 
-           /* int noOfDevisionsX = int.Parse(tbxNumDevX.Text);
-            int noOfDevisionsY = int.Parse(tbxNumDevY.Text);
-            int intervalValX = int.Parse(tbxIntervalValX.Text);
-            int intervalValY = int.Parse(tbxIntervalValY.Text);
-            double x = double.Parse(txbXcoordinate.Text);
-            double y = double.Parse(txbYcoordinate.Text);*/
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            canvasHandler.SortCanvasPoints();
+            lbxPoints.ItemsSource = diagramData.GetCoordinatePoints();
+        }
 
+        private void drawCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            var p = e.GetPosition(drawCanvas);
+           canvasHandler.Cross(p);
         }
 
 

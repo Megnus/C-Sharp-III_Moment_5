@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,26 @@ namespace DiagramGenerator
             this.canvas = canvas;
             this.diagramData = diagramData;
             CreatePolyLine();
+            
+            canvas.Children.Add(xLine);
+            canvas.Children.Add(yLine);
+
+            xLine.X1 = 0;
+            xLine.X2 = canvas.Width;
+            xLine.Stroke = System.Windows.Media.Brushes.Blue;
+            xLine.SnapsToDevicePixels = true;
+            xLine.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+            xLine.StrokeThickness = 1;
+            xLine.StrokeDashArray = new DoubleCollection() { 4, 2 };
+
+            yLine.Y1 = 0;
+            yLine.Y2 = canvas.Height;
+            yLine.Stroke = System.Windows.Media.Brushes.Blue;
+            yLine.SnapsToDevicePixels = true;
+            yLine.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
+            yLine.StrokeThickness = 1;
+            //yLine.Visibility = Visibility.Hidden;
+            yLine.StrokeDashArray = new DoubleCollection() { 4, 2 };
         }
 
         private void CreatePolyLine()
@@ -34,17 +55,50 @@ namespace DiagramGenerator
             canvas.Children.Add(polyline);
             polyline.Visibility = Visibility.Visible;
             polyline.Points = diagramData.GetCanvasPoints();
+            AddDots();
+        }
+
+        Line xLine = new Line();
+        Line yLine = new Line();
+
+        public void Cross(Point point)
+        {
+           
+            xLine.Y1 = xLine.Y2 = point.Y;
+            yLine.X1 = yLine.X2 = point.X;
+            
+
+        }
+
+        public void SortCanvasPoints()
+        {
+            diagramData.SortPoints();
+            polyline.Points = diagramData.GetCanvasPoints();
         }
 
         public void AddToPolyLine(Point point)
         {
             diagramData.AddNewPoint(point);
+            AddDot(diagramData.LastCanvasPoint);
+        }
+
+        public void AddDot(Point point)
+        {
+            Debug.WriteLine(point);
             Ellipse ellipse = new Ellipse();
             ellipse.Width = ellipse.Height = 5.0;
             ellipse.Stroke = Brushes.Red;
-            ellipse.SetValue(Canvas.LeftProperty, diagramData.GetCanvasPoints().Last().X - 3.0);
-            ellipse.SetValue(Canvas.TopProperty, diagramData.GetCanvasPoints().Last().Y - 3.0);
+            ellipse.SetValue(Canvas.LeftProperty, point.X - 3.0);
+            ellipse.SetValue(Canvas.TopProperty, point.Y - 3.0);
             canvas.Children.Add(ellipse);
+        }
+
+        private void AddDots()
+        {
+            for (int index = 0; index < diagramData.NumberOfPoints; index++)
+            {
+                AddDot(diagramData.GetCanvasPoint(index));
+            }
         }
 
         public void DrawText(int noOfDevisionsX, int noOfDevisionsY, int intervalValX, int intervalValY)

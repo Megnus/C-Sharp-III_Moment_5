@@ -11,7 +11,7 @@ namespace DiagramGenerator
         public static void WriteXML(DiagramData diagramData)
         {
             Microsoft.Win32.SaveFileDialog dl1 = new Microsoft.Win32.SaveFileDialog();
-            dl1.FileName = "Diagram data";
+            //dl1.FileName = "Diagram data";
             dl1.DefaultExt = ".xml";
             dl1.Filter = "XML file (.xml)|*.xml";
             Nullable<bool> result = dl1.ShowDialog();
@@ -31,7 +31,7 @@ namespace DiagramGenerator
         {
             DiagramData diagramData = null;
             Microsoft.Win32.OpenFileDialog dl1 = new Microsoft.Win32.OpenFileDialog();
-            dl1.FileName = "Diagram data";
+            //dl1.FileName = "Diagram data";
             dl1.DefaultExt = ".xml";
             dl1.Filter = "XML file (.xml)|*.xml";
             Nullable<bool> result = dl1.ShowDialog();

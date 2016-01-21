@@ -17,6 +17,8 @@ namespace DiagramGenerator
         public PointCollection coordinatePoints;
         public PointCollection canvasPoints;
 
+        private Point lastCanvasPoint;
+
         private const int offsetX = 35;
         private const int offsetY = 35;
 
@@ -35,22 +37,44 @@ namespace DiagramGenerator
 
         public void AddNewPoint(Point point)
         {
+            lastCanvasPoint = Transpose(point);
             coordinatePoints.Add(point);
-            canvasPoints.Add(Transpose(point));
+            canvasPoints.Add(lastCanvasPoint);
+        }
+
+        public int NumberOfPoints 
+        {
+            get
+            {
+                return coordinatePoints.Count;
+            }
+        }
+
+        public Point LastCanvasPoint
+        {
+            get
+            {
+                return lastCanvasPoint;
+            }
+        }
+
+        public Point GetCanvasPoint(int index)
+        {
+            return canvasPoints[index];
         }
 
         public void SortPoints()
         {
-            coordinatePoints = new PointCollection(coordinatePoints.OrderByDescending(p => p.X).ThenBy(p => p.Y).ToList());
-            canvasPoints = new PointCollection(canvasPoints.OrderByDescending(p => p.X).ThenBy(p => p.Y).ToList());
+            coordinatePoints = new PointCollection(coordinatePoints.OrderBy(p => p.X).ThenByDescending(p => p.Y).ToList());
+            canvasPoints = new PointCollection(canvasPoints.OrderBy(p => p.X).ThenByDescending(p => p.Y).ToList());
         }
 
         private Point Transpose(Point point)
         {
-            Point newPoint = new Point();
-            newPoint.X = (int)((CanvasWidth - offsetX * 2) * point.X / (InterValValueX * NumberOfDevisionsX)) + offsetX;
-            newPoint.Y = (int)CanvasHeight - (int)((CanvasHeight - offsetY * 2) * point.Y / (InterValValueY * NumberOfDevisionsY)) - offsetY;
-            return newPoint;
+            Point transposedPoint = new Point();
+            transposedPoint.X = (int)((CanvasWidth - offsetX * 2) * point.X / (InterValValueX * NumberOfDevisionsX)) + offsetX;
+            transposedPoint.Y = (int)CanvasHeight - (int)((CanvasHeight - offsetY * 2) * point.Y / (InterValValueY * NumberOfDevisionsY)) - offsetY;
+            return transposedPoint;
         }
 
         public void ClearPoints()
