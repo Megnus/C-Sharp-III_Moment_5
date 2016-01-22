@@ -77,6 +77,18 @@ namespace DiagramGenerator
             return transposedPoint;
         }
 
+        public Point Reverse(Point point)
+        {
+            Point reversedPoint = new Point();
+            //transposedPoint.X = (int)((CanvasWidth - offsetX * 2) * point.X / (InterValValueX * NumberOfDevisionsX)) + offsetX;
+            reversedPoint.X = (double)(point.X - offsetX) * (InterValValueX * NumberOfDevisionsX) / ((CanvasWidth - offsetX * 2));
+
+            //transposedPoint.Y = (int)CanvasHeight - (int)((CanvasHeight - offsetY * 2) * point.Y / (InterValValueY * NumberOfDevisionsY)) - offsetY;
+            reversedPoint.Y = (double)(-offsetY - point.Y + CanvasHeight) * (InterValValueY * NumberOfDevisionsY) / (CanvasHeight - offsetY * 2);
+
+            return reversedPoint;
+        }
+
         public void ClearPoints()
         {
             coordinatePoints.Clear();

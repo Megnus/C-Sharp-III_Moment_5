@@ -53,6 +53,7 @@ namespace DiagramGenerator
         private void clearButton_Click(object sender, RoutedEventArgs e)
         {
             canvasHandler.ClearCanvas();
+            //drawCanvas.Children.Clear();
             lbxPoints.Items.Refresh();
             btnSettingsOk_Click(sender, e);
             grbSettings.IsEnabled = true;
@@ -73,7 +74,12 @@ namespace DiagramGenerator
         {
             grbSettings.IsEnabled = false;
             grbAddPoint.IsEnabled = true;
+
+            //canvasHandler.ClearCanvas();
+            //drawCanvas.Children.Clear();
             canvasHandler.ClearCanvas();
+            //diagramData.ClearPoints();
+            
             int noOfDevisionsX = int.Parse(tbxNumDevX.Text);
             int noOfDevisionsY = int.Parse(tbxNumDevY.Text);
             int intervalValX = int.Parse(tbxIntervalValX.Text);
@@ -112,6 +118,16 @@ namespace DiagramGenerator
         {
             var p = e.GetPosition(drawCanvas);
            canvasHandler.Cross(p);
+        }
+
+        private void drawCanvas_MouseLeave(object sender, MouseEventArgs e)
+        {
+            canvasHandler.SetCrossVisiblity(Visibility.Hidden);
+        }
+
+        private void drawCanvas_MouseEnter(object sender, MouseEventArgs e)
+        {
+            canvasHandler.SetCrossVisiblity(Visibility.Visible);
         }
 
 

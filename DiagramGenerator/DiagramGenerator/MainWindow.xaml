@@ -19,7 +19,7 @@
                 <MenuItem Header="Remove" />
             </Menu>
             <StackPanel  Orientation="Horizontal" Background="WhiteSmoke" DockPanel.Dock="Right" HorizontalAlignment="Left">
-                <Canvas x:Name="drawCanvas" Background="White" Width="480" Height="470" HorizontalAlignment="Left" MouseMove="drawCanvas_MouseMove">
+                <Canvas x:Name="drawCanvas" Background="White" Width="480" Height="470" HorizontalAlignment="Left" MouseMove="drawCanvas_MouseMove" Cursor="None" MouseLeave="drawCanvas_MouseLeave" MouseEnter="drawCanvas_MouseEnter">
                     <!--
                     <Line x:Name="line" Stroke="Blue" Visibility="Visible"/>
                     <Polyline x:Name="polyline" Stroke="Red" Visibility="Collapsed"/>
