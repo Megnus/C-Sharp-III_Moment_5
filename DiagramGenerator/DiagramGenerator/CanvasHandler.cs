@@ -21,14 +21,14 @@ namespace DiagramGenerator
         {
             this.canvas = canvas;
             this.diagramData = diagramData;
-            CreateCross();
+            //CreateCross();
         }
 
         private Line xLine;
         private Line yLine;
         TextBlock crossText = new TextBlock();
 
-        private void CreateCross()
+        public void CreateCross()
         {
             xLine = new Line();
             yLine = new Line();

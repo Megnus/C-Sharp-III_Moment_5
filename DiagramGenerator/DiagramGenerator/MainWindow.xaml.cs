@@ -47,13 +47,14 @@ namespace DiagramGenerator
             diagramData.CanvasHeight = drawCanvas.Height;
             lbxPoints.ItemsSource = diagramData.GetCoordinatePoints();
             canvasHandler = new CanvasHandler(drawCanvas, diagramData);
+            // create cross
+            canvasHandler.CreateCross();
         }
 
         // when the clear Button is clicked
         private void clearButton_Click(object sender, RoutedEventArgs e)
         {
             canvasHandler.ClearCanvas();
-            //drawCanvas.Children.Clear();
             lbxPoints.Items.Refresh();
             btnSettingsOk_Click(sender, e);
             grbSettings.IsEnabled = true;
@@ -74,11 +75,7 @@ namespace DiagramGenerator
         {
             grbSettings.IsEnabled = false;
             grbAddPoint.IsEnabled = true;
-
-            //canvasHandler.ClearCanvas();
-            //drawCanvas.Children.Clear();
             canvasHandler.ClearCanvas();
-            //diagramData.ClearPoints();
             
             int noOfDevisionsX = int.Parse(tbxNumDevX.Text);
             int noOfDevisionsY = int.Parse(tbxNumDevY.Text);
@@ -101,6 +98,7 @@ namespace DiagramGenerator
             grbAddPoint.IsEnabled = true;
 
             canvasHandler = new CanvasHandler(drawCanvas, diagramData);
+            canvasHandler.CreateCross();
         }
 
         private void MenuItem_Save_Click(object sender, RoutedEventArgs e)
