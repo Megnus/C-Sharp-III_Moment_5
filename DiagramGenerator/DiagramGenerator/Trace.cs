@@ -16,24 +16,25 @@ namespace DiagramGenerator
         private Line yLine;
         private Canvas canvas;
         private DiagramData diagramData;
-        TextBlock crossText = new TextBlock();
+        private TextBlock tracerText = new TextBlock();
 
-        public void CreateCross(Canvas canvas, DiagramData diagramData)
+        public Trace(Canvas canvas, DiagramData diagramData)
         {
-            //xLine = new Line();
-            //yLine = new Line();
             this.canvas = canvas;
             this.diagramData = diagramData;
 
-            CreateTraceLine(xLine);
-            CreateTraceLine(yLine);
+            xLine = CreateTraceLine();
+            yLine = CreateTraceLine();
         }
 
-        private void CreateTraceLine(Line line)
+        private Line CreateTraceLine()
         {
-            line = new Line();
+            Line line = new Line();
             line.X1 = 0;
+            line.Y1 = 0;
             line.X2 = canvas.Width;
+            line.Y2 = canvas.Height;
+
             line.Stroke = System.Windows.Media.Brushes.DarkGreen;
             line.SnapsToDevicePixels = true;
             line.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
@@ -41,32 +42,36 @@ namespace DiagramGenerator
             line.Visibility = Visibility.Hidden;
             line.StrokeDashArray = new DoubleCollection() { 4, 2 };
             canvas.Children.Add(line);
+            return line;
         }
 
         public void SetCrossVisiblity(Visibility vis)
         {
             xLine.Visibility = vis;
             yLine.Visibility = vis;
-            crossText.Visibility = vis;
+            tracerText.Visibility = vis;
         }
 
-        public void Cross(Point point)
+        public void SetTrace(Point point)
         {
             xLine.Y1 = xLine.Y2 = point.Y;
             yLine.X1 = yLine.X2 = point.X;
 
-            xLine.Visibility = Visibility.Visible;
-            yLine.Visibility = Visibility.Visible;
+            xLine.Visibility = yLine.Visibility = Visibility.Visible;
 
-            canvas.Children.Remove(crossText);
-            crossText.TextAlignment = TextAlignment.Right;
-            //crossText.Width = width;
+            SetText(point);
+        }
+
+        private void SetText(Point point)
+        {
+            canvas.Children.Remove(tracerText);
+            tracerText.TextAlignment = TextAlignment.Right;
             Point p = diagramData.Reverse(point);
-            crossText.Text = string.Format("({0}, {1})", p.X.ToString("0.00"), p.Y.ToString("0.00"));
-            crossText.Foreground = new SolidColorBrush(Colors.DarkGreen);
-            Canvas.SetLeft(crossText, point.X + 5);
-            Canvas.SetTop(crossText, point.Y + 5);
-            canvas.Children.Add(crossText);
+            tracerText.Text = string.Format("({0}, {1})", p.X.ToString("0.00"), p.Y.ToString("0.00"));
+            tracerText.Foreground = new SolidColorBrush(Colors.DarkGreen);
+            Canvas.SetLeft(tracerText, point.X + 5);
+            Canvas.SetTop(tracerText, point.Y + 5);
+            canvas.Children.Add(tracerText);
         }
 
     }

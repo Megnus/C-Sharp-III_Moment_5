@@ -37,6 +37,7 @@ namespace DiagramGenerator
 
         private DiagramData diagramData;
         private CanvasHandler canvasHandler;
+        private Trace tracer;
 
         // initialize the points of the shapes
         public MainWindow()
@@ -47,8 +48,10 @@ namespace DiagramGenerator
             diagramData.CanvasHeight = drawCanvas.Height;
             lbxPoints.ItemsSource = diagramData.GetCoordinatePoints();
             canvasHandler = new CanvasHandler(drawCanvas, diagramData);
+
             // create cross
-            canvasHandler.CreateCross();
+            //canvasHandler.CreateCross();
+            tracer = new Trace(drawCanvas, diagramData);
         }
 
         // when the clear Button is clicked
@@ -99,6 +102,7 @@ namespace DiagramGenerator
 
             canvasHandler = new CanvasHandler(drawCanvas, diagramData);
             canvasHandler.CreateCross();
+            tracer = new Trace(drawCanvas, diagramData);
         }
 
         private void MenuItem_Save_Click(object sender, RoutedEventArgs e)
@@ -115,17 +119,18 @@ namespace DiagramGenerator
         private void drawCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             var p = e.GetPosition(drawCanvas);
-           canvasHandler.Cross(p);
+           //canvasHandler.Cross(p);
+           tracer.SetTrace(p);
         }
 
         private void drawCanvas_MouseLeave(object sender, MouseEventArgs e)
         {
-            canvasHandler.SetCrossVisiblity(Visibility.Hidden);
+            tracer.SetCrossVisiblity(Visibility.Hidden);
         }
 
         private void drawCanvas_MouseEnter(object sender, MouseEventArgs e)
         {
-            canvasHandler.SetCrossVisiblity(Visibility.Visible);
+            tracer.SetCrossVisiblity(Visibility.Visible);
         }
 
 
