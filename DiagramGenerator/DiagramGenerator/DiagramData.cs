@@ -24,15 +24,20 @@ namespace DiagramGenerator
 
         public double CanvasWidth { get; set; }
         public double CanvasHeight { get; set; }
-        public int NumberOfDevisionsX { get; set; }
-        public int NumberOfDevisionsY { get; set; }
-        public int InterValValueX { get; set; }
-        public int InterValValueY { get; set; }
+        public double NumberOfDevisionsX { get; set; }
+        public double NumberOfDevisionsY { get; set; }
+        public double InterValValueX { get; set; }
+        public double InterValValueY { get; set; }
 
         public DiagramData()
         {
             this.coordinatePoints = new PointCollection();
             this.canvasPoints = new PointCollection();
+
+            NumberOfDevisionsX = 10;
+            NumberOfDevisionsY = 10;
+            InterValValueX = 0.1;
+            InterValValueY = 0.1;
         }
 
         public void AddNewPoint(Point point)
@@ -42,20 +47,14 @@ namespace DiagramGenerator
             canvasPoints.Add(lastCanvasPoint);
         }
 
-        public int NumberOfPoints 
+        public int NumberOfPoints
         {
-            get
-            {
-                return coordinatePoints.Count;
-            }
+            get { return coordinatePoints.Count; }
         }
 
         public Point LastCanvasPoint
         {
-            get
-            {
-                return lastCanvasPoint;
-            }
+            get { return lastCanvasPoint; }
         }
 
         public Point GetCanvasPoint(int index)
@@ -80,12 +79,8 @@ namespace DiagramGenerator
         public Point Reverse(Point point)
         {
             Point reversedPoint = new Point();
-            //transposedPoint.X = (int)((CanvasWidth - offsetX * 2) * point.X / (InterValValueX * NumberOfDevisionsX)) + offsetX;
             reversedPoint.X = (double)(point.X - offsetX) * (InterValValueX * NumberOfDevisionsX) / ((CanvasWidth - offsetX * 2));
-
-            //transposedPoint.Y = (int)CanvasHeight - (int)((CanvasHeight - offsetY * 2) * point.Y / (InterValValueY * NumberOfDevisionsY)) - offsetY;
             reversedPoint.Y = (double)(-offsetY - point.Y + CanvasHeight) * (InterValValueY * NumberOfDevisionsY) / (CanvasHeight - offsetY * 2);
-
             return reversedPoint;
         }
 

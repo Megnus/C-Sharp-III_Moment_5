@@ -16,50 +16,27 @@ namespace DiagramGenerator
         private Canvas canvas;
         private DiagramData diagramData;
         private Polyline polyline;
+        private Trace tracer;
+        private Axis axis;
 
         public CanvasHandler(Canvas canvas, DiagramData diagramData)
         {
             this.canvas = canvas;
             this.diagramData = diagramData;
-            //CreateCross();
+            this.tracer = new Trace(canvas, diagramData);
+            this.axis = new Axis(canvas, diagramData);
+            this.polyline = new Polyline();
+            PolylineSettings(polyline);
+
         }
 
-        private Line xLine;
-        private Line yLine;
-        TextBlock crossText = new TextBlock();
-
-        public void CreateCross()
-        {
-            xLine = new Line();
-            yLine = new Line();
-
-            xLine.X1 = 0;
-            xLine.X2 = canvas.Width;
-            xLine.Stroke = System.Windows.Media.Brushes.DarkGreen;
-            xLine.SnapsToDevicePixels = true;
-            xLine.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
-            xLine.StrokeThickness = 1;
-            xLine.Visibility = Visibility.Hidden;
-            xLine.StrokeDashArray = new DoubleCollection() { 4, 2 };
-
-            yLine.Y1 = 0;
-            yLine.Y2 = canvas.Height;
-            yLine.Stroke = System.Windows.Media.Brushes.DarkGreen;
-            yLine.SnapsToDevicePixels = true;
-            yLine.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
-            yLine.StrokeThickness = 1;
-            yLine.Visibility = Visibility.Hidden;
-            yLine.StrokeDashArray = new DoubleCollection() { 4, 2 };
-
-            canvas.Children.Add(xLine);
-            canvas.Children.Add(yLine);
-
-            CreatePolyLine();
+        public Trace Tracer 
+        { 
+            get { return this.tracer; } 
         }
 
-        private void CreatePolyLine()
+        public void PolylineSettings(Polyline polyline)
         {
-            polyline = new Polyline();
             polyline.Visibility = Visibility.Visible;
             polyline.Stroke = System.Windows.Media.Brushes.Red;
             polyline.SnapsToDevicePixels = true;
@@ -69,33 +46,6 @@ namespace DiagramGenerator
             polyline.Visibility = Visibility.Visible;
             polyline.Points = diagramData.GetCanvasPoints();
             AddDots();
-        }
-
-        public void Cross(Point point)
-        {
-            xLine.Y1 = xLine.Y2 = point.Y;
-            yLine.X1 = yLine.X2 = point.X;
-
-            xLine.Visibility = Visibility.Visible;
-            yLine.Visibility = Visibility.Visible;
-
-            canvas.Children.Remove(crossText);
-            crossText.TextAlignment = TextAlignment.Right;
-            //crossText.Width = width;
-            Point p = diagramData.Reverse(point);
-            Debug.WriteLine(p);
-            crossText.Text = string.Format("({0}, {1})", p.X.ToString("0.00"), p.Y.ToString("0.00"));
-            crossText.Foreground = new SolidColorBrush(Colors.DarkGreen);
-            Canvas.SetLeft(crossText, point.X + 5);
-            Canvas.SetTop(crossText, point.Y + 5);
-            canvas.Children.Add(crossText);
-        }
-
-        public void SetCrossVisiblity(Visibility vis)
-        {
-            xLine.Visibility = vis;
-            yLine.Visibility = vis;
-            crossText.Visibility = vis;
         }
 
         public void SortCanvasPoints()
@@ -129,78 +79,10 @@ namespace DiagramGenerator
             }
         }
 
-        public void DrawText(int noOfDevisionsX, int noOfDevisionsY, int intervalValX, int intervalValY)
-        {
-            CreateCross();
-
-            diagramData.InterValValueX = intervalValX;
-            diagramData.InterValValueY = intervalValY;
-            diagramData.NumberOfDevisionsX = noOfDevisionsX;
-            diagramData.NumberOfDevisionsY = noOfDevisionsY;
-
-            double offsetX = (noOfDevisionsY * intervalValY).ToString().Length * 8;
-            double offsetY = 35;
-
-            for (int i = 0; i <= noOfDevisionsX; i++)
-            {
-                double x = offsetX + (diagramData.CanvasWidth - offsetX * 2) / noOfDevisionsX * i;
-                Text(x, diagramData.CanvasHeight - offsetY, (i * intervalValX).ToString(), Colors.Blue, Double.NaN);
-            }
-
-            int len = (noOfDevisionsY * intervalValY).ToString().Length;
-            for (int i = 0; i <= noOfDevisionsY; i++)
-            {
-                double y = offsetY + (diagramData.CanvasHeight - offsetY * 2) / noOfDevisionsY * i + 10;
-                Text(2, diagramData.CanvasHeight - y, (i * intervalValY).ToString(), Colors.Blue, offsetX - 5);
-            }
-
-            DrawCoordinates(offsetX, 10, offsetX, diagramData.CanvasHeight - offsetY);
-            DrawCoordinates(offsetX, diagramData.CanvasHeight - offsetY, diagramData.CanvasWidth - 10, diagramData.CanvasHeight - offsetY);
-        }
-
-        private void DrawCoordinates(double x1, double y1, double x2, double y2)
-        {
-            Line myLine = new Line();
-            myLine.Stroke = System.Windows.Media.Brushes.Blue;
-            myLine.SnapsToDevicePixels = true;
-            myLine.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
-
-            myLine.X1 = (int)x1;
-            myLine.X2 = (int)x2;
-            myLine.Y1 = (int)y1;
-            myLine.Y2 = (int)y2;
-
-            myLine.StrokeThickness = 1;
-            canvas.Children.Add(myLine);
-        }
-
-        private void Text(double x, double y, string text, Color color, double width)
-        {
-            TextBlock textBlock = new TextBlock();
-            textBlock.TextAlignment = TextAlignment.Right;
-            textBlock.Width = width;
-            textBlock.Text = text;
-            textBlock.Foreground = new SolidColorBrush(color);
-            Canvas.SetLeft(textBlock, x);
-            Canvas.SetTop(textBlock, y);
-            canvas.Children.Add(textBlock);
-        }
-
         public void ClearCanvas()
         {
-            
             canvas.Children.Clear();
-          /*  foreach (var o in canvas.Children)
-            {
-                if (o is Ellipse)
-                    canvas.Children.Remove((Ellipse)o);
-
-                if (o is TextBlock)
-                    canvas.Children.Remove((TextBlock)o);
-            }*/
-
             diagramData.ClearPoints();
-            //CreatePolyLine();
         }
     }
 }

@@ -56,9 +56,7 @@ namespace DiagramGenerator
         {
             xLine.Y1 = xLine.Y2 = point.Y;
             yLine.X1 = yLine.X2 = point.X;
-
             xLine.Visibility = yLine.Visibility = Visibility.Visible;
-
             SetText(point);
         }
 

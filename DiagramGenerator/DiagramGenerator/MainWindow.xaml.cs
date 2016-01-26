@@ -51,7 +51,7 @@ namespace DiagramGenerator
 
             // create cross
             //canvasHandler.CreateCross();
-            tracer = new Trace(drawCanvas, diagramData);
+            //tracer = new Trace(drawCanvas, diagramData);
         }
 
         // when the clear Button is clicked
@@ -78,13 +78,17 @@ namespace DiagramGenerator
         {
             grbSettings.IsEnabled = false;
             grbAddPoint.IsEnabled = true;
+
+            diagramData.NumberOfDevisionsX = int.Parse(tbxNumDevX.Text);
+            diagramData.NumberOfDevisionsY = int.Parse(tbxNumDevY.Text);
+            diagramData.InterValValueX = int.Parse(tbxIntervalValX.Text);
+            diagramData.InterValValueY = int.Parse(tbxIntervalValY.Text);
+          
             canvasHandler.ClearCanvas();
-            
-            int noOfDevisionsX = int.Parse(tbxNumDevX.Text);
-            int noOfDevisionsY = int.Parse(tbxNumDevY.Text);
-            int intervalValX = int.Parse(tbxIntervalValX.Text);
-            int intervalValY = int.Parse(tbxIntervalValY.Text);
-            canvasHandler.DrawText(noOfDevisionsX, noOfDevisionsY, intervalValX, intervalValY);
+            canvasHandler = new CanvasHandler(drawCanvas, diagramData);
+            //tracer = new Trace(drawCanvas, diagramData);
+            //new Axis(drawCanvas, diagramData);
+            //canvasHandler.CreatePolyLine();
         }
 
         private void MenuItem_Open_Click(object sender, RoutedEventArgs e)
@@ -96,13 +100,15 @@ namespace DiagramGenerator
             tbxNumDevY.Text = diagramData.NumberOfDevisionsY.ToString();
             tbxIntervalValX.Text = diagramData.InterValValueX.ToString();
             tbxIntervalValY.Text = diagramData.InterValValueY.ToString();
-            btnSettingsOk_Click(sender, e);
+            //btnSettingsOk_Click(sender, e);
             grbSettings.IsEnabled = false;
             grbAddPoint.IsEnabled = true;
 
+            canvasHandler.ClearCanvas();
             canvasHandler = new CanvasHandler(drawCanvas, diagramData);
-            canvasHandler.CreateCross();
-            tracer = new Trace(drawCanvas, diagramData);
+            //tracer = new Trace(drawCanvas, diagramData);
+            //new Axis(drawCanvas, diagramData);
+            //canvasHandler.CreatePolyLine();
         }
 
         private void MenuItem_Save_Click(object sender, RoutedEventArgs e)
@@ -118,19 +124,20 @@ namespace DiagramGenerator
 
         private void drawCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            var p = e.GetPosition(drawCanvas);
+            Point point = e.GetPosition(drawCanvas);
            //canvasHandler.Cross(p);
-           tracer.SetTrace(p);
+           //tracer.SetTrace(p);
+            canvasHandler.Tracer.SetTrace(point);
         }
 
         private void drawCanvas_MouseLeave(object sender, MouseEventArgs e)
         {
-            tracer.SetCrossVisiblity(Visibility.Hidden);
+            canvasHandler.Tracer.SetCrossVisiblity(Visibility.Hidden);
         }
 
         private void drawCanvas_MouseEnter(object sender, MouseEventArgs e)
         {
-            tracer.SetCrossVisiblity(Visibility.Visible);
+            canvasHandler.Tracer.SetCrossVisiblity(Visibility.Visible);
         }
 
 
