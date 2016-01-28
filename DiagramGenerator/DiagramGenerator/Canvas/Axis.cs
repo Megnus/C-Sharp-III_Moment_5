@@ -25,7 +25,7 @@ namespace DiagramGenerator
         private void CreateAxis()
         {
             double offsetY = 35;
-            double offsetX = Enumerable.Range(0, (int)diagramData.NumberOfDevisionsY)
+            double offsetX = Enumerable.Range(0, (int)diagramData.NumberOfDevisionsY + 1)
                 .Select(x => (x * diagramData.InterValValueY).ToString().Length * 10).Max();
 
             CreateTicks(offsetX, offsetY);

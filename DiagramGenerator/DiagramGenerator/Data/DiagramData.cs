@@ -62,10 +62,16 @@ namespace DiagramGenerator
             return canvasPoints[index];
         }
 
-        public void SortPoints()
+        public void SortXPoints()
         {
-            coordinatePoints = new PointCollection(coordinatePoints.OrderBy(p => p.X).ThenByDescending(p => p.Y).ToList());
+            coordinatePoints = new PointCollection(coordinatePoints.OrderBy(p => p.X).ThenBy(p => p.Y).ToList());
             canvasPoints = new PointCollection(canvasPoints.OrderBy(p => p.X).ThenByDescending(p => p.Y).ToList());
+        }
+
+        public void SortYPoints()
+        {
+            coordinatePoints = new PointCollection(coordinatePoints.OrderBy(p => p.Y).ThenBy(p => p.X).ToList());
+            canvasPoints = new PointCollection(canvasPoints.OrderByDescending(p => p.Y).ThenBy(p => p.X).ToList());
         }
 
         private Point Transpose(Point point)

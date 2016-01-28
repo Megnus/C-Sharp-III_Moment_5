@@ -8,23 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-
-
-/* TODO
- *      -- Spara data till xml-fil --
- *      a) Kolla hur man sparar ett objekt till xml
- *      b) Fixa ett Dataobjekt: settings + points
- * x    c) Se till att data sparas till detta objekt och att projektet använder objetet
- *      d) Spara detta objekt 
- *      e) Öppna detta objekt och ladda in data samt sätt groubox till enable/disable
- * x    f) Kolla hur man sorterar data baserat på x i point
- *          pointsOfList = pointsOfList.OrderByDescending(p => p.X).ThenBy(p=>p.y).ToList();
- *      g) Ändra färger på labels osv. 
- *      h) Dela upp i flera klasser bla. en calc-class.
- *      i) Skriv kommentarer och namn och datum på klasserna.
- *      j) Importera dll för att testa int osv.
- *      k) Skicka in lösningen.
-*/
+using UtilitiesLib;
 
 namespace DiagramGenerator
 {
@@ -33,13 +17,9 @@ namespace DiagramGenerator
     /// </summary>
     public partial class MainWindow : Window
     {
-        // stores the collection of points for the mutisided shapes
-
         private DiagramData diagramData;
         private CanvasHandler canvasHandler;
-        private Trace tracer;
 
-        // initialize the points of the shapes
         public MainWindow()
         {
             InitializeComponent();
@@ -48,13 +28,8 @@ namespace DiagramGenerator
             diagramData.CanvasHeight = drawCanvas.Height;
             lbxPoints.ItemsSource = diagramData.GetCoordinatePoints();
             canvasHandler = new CanvasHandler(drawCanvas, diagramData);
-
-            // create cross
-            //canvasHandler.CreateCross();
-            //tracer = new Trace(drawCanvas, diagramData);
         }
 
-        // when the clear Button is clicked
         private void clearButton_Click(object sender, RoutedEventArgs e)
         {
             canvasHandler.ClearCanvas();
@@ -68,30 +43,65 @@ namespace DiagramGenerator
 
         private void btnAddPoint_Click(object sender, RoutedEventArgs e)
         {
-            double x = double.Parse(txbXcoordinate.Text);
-            double y = double.Parse(txbYcoordinate.Text);
+            double x = 0, y = 0;
+
+            if (!ValidateTextField(txbXcoordinate, out x) || !ValidateTextField(txbYcoordinate, out y))
+            {
+                return;
+            };
+
             canvasHandler.AddToPolyLine(new Point(x, y));
             lbxPoints.Items.Refresh();
         }
 
+        private bool ValidateTextField(TextBox textBox, out double value)
+        {
+            value = InputHandeling.PareseDouble(textBox.Text);
+
+            if (!InputHandeling.DoubleIsParsable(textBox.Text))
+            {
+                textBox.Focus();
+                textBox.SelectAll();
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidateTextField(TextBox textBox, out int value)
+        {
+            double temp;
+            bool result = ValidateTextField(textBox, out temp);
+            value = (int)temp;
+            return result;
+        }
+
         private void btnSettingsOk_Click(object sender, RoutedEventArgs e)
         {
+            int numberOfDevisionsX = 0, numberOfDevisionsY = 0;
+            double interValValueX = 0, interValValueY = 0;
+
+            if (!ValidateTextField(tbxNumDevX, out numberOfDevisionsX)
+                || !ValidateTextField(tbxNumDevY, out numberOfDevisionsY)
+                || !ValidateTextField(tbxIntervalValX, out interValValueX)
+                || !ValidateTextField(tbxIntervalValY, out interValValueY))
+            {
+                return;
+            };
+
+            diagramData.InterValValueY = interValValueY;
+            diagramData.NumberOfDevisionsX = numberOfDevisionsX;
+            diagramData.NumberOfDevisionsY = numberOfDevisionsY;
+            diagramData.InterValValueX = interValValueX;
+
             grbSettings.IsEnabled = false;
             grbAddPoint.IsEnabled = true;
 
-            diagramData.NumberOfDevisionsX = int.Parse(tbxNumDevX.Text);
-            diagramData.NumberOfDevisionsY = int.Parse(tbxNumDevY.Text);
-            diagramData.InterValValueX = int.Parse(tbxIntervalValX.Text);
-            diagramData.InterValValueY = int.Parse(tbxIntervalValY.Text);
-          
             canvasHandler.ClearCanvas();
             canvasHandler = new CanvasHandler(drawCanvas, diagramData);
-            //tracer = new Trace(drawCanvas, diagramData);
-            //new Axis(drawCanvas, diagramData);
-            //canvasHandler.CreatePolyLine();
         }
 
-        private void MenuItem_Open_Click(object sender, RoutedEventArgs e)
+        private void Open_Click(object sender, RoutedEventArgs e)
         {
             diagramData = XmlFileHandler.ReadXML();
             lbxPoints.ItemsSource = diagramData.GetCoordinatePoints();
@@ -100,33 +110,33 @@ namespace DiagramGenerator
             tbxNumDevY.Text = diagramData.NumberOfDevisionsY.ToString();
             tbxIntervalValX.Text = diagramData.InterValValueX.ToString();
             tbxIntervalValY.Text = diagramData.InterValValueY.ToString();
-            //btnSettingsOk_Click(sender, e);
             grbSettings.IsEnabled = false;
             grbAddPoint.IsEnabled = true;
 
             canvasHandler.ClearCanvas();
             canvasHandler = new CanvasHandler(drawCanvas, diagramData);
-            //tracer = new Trace(drawCanvas, diagramData);
-            //new Axis(drawCanvas, diagramData);
-            //canvasHandler.CreatePolyLine();
         }
 
-        private void MenuItem_Save_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
-            XmlFileHandler.WriteXML(diagramData);   
+            XmlFileHandler.WriteXML(diagramData);
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void SortX_Click(object sender, RoutedEventArgs e)
         {
-            canvasHandler.SortCanvasPoints();
+            canvasHandler.SortXCanvasPoints();
+            lbxPoints.ItemsSource = diagramData.GetCoordinatePoints();
+        }
+
+        private void SortY_Click(object sender, RoutedEventArgs e)
+        {
+            canvasHandler.SortYCanvasPoints();
             lbxPoints.ItemsSource = diagramData.GetCoordinatePoints();
         }
 
         private void drawCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             Point point = e.GetPosition(drawCanvas);
-           //canvasHandler.Cross(p);
-           //tracer.SetTrace(p);
             canvasHandler.Tracer.SetTrace(point);
         }
 
@@ -140,6 +150,10 @@ namespace DiagramGenerator
             canvasHandler.Tracer.SetCrossVisiblity(Visibility.Visible);
         }
 
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
 
     }
 }

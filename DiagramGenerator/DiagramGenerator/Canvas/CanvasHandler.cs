@@ -27,7 +27,6 @@ namespace DiagramGenerator
             this.axis = new Axis(canvas, diagramData);
             this.polyline = new Polyline();
             PolylineSettings(polyline);
-
         }
 
         public Trace Tracer 
@@ -48,9 +47,15 @@ namespace DiagramGenerator
             AddDots();
         }
 
-        public void SortCanvasPoints()
+        public void SortXCanvasPoints()
         {
-            diagramData.SortPoints();
+            diagramData.SortXPoints();
+            polyline.Points = diagramData.GetCanvasPoints();
+        }
+
+        public void SortYCanvasPoints()
+        {
+            diagramData.SortYPoints();
             polyline.Points = diagramData.GetCanvasPoints();
         }
 

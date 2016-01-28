@@ -46,6 +46,10 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UtilitiesLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f3592caa77ed159c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\UtilitiesLib.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -55,9 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Axis.cs" />
-    <Compile Include="Trace.cs" />
-    <Compile Include="XmlFileHandler.cs" />
+    <Compile Include="Canvas\Axis.cs" />
+    <Compile Include="Canvas\Trace.cs" />
+    <Compile Include="Data\XmlFileHandler.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -66,8 +70,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CanvasHandler.cs" />
-    <Compile Include="DiagramData.cs" />
+    <Compile Include="Canvas\CanvasHandler.cs" />
+    <Compile Include="Data\DiagramData.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -99,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UtilitiesLib.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

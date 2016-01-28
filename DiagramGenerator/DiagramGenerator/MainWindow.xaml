@@ -7,26 +7,18 @@
         <DockPanel>
             <Menu x:Name="mainMenu" DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="Open" Click="MenuItem_Open_Click"/>
-                    <MenuItem Header="Save" Click="MenuItem_Save_Click"/>
+                    <MenuItem Header="Open" Click="Open_Click"/>
+                    <MenuItem Header="Save" Click="Save_Click"/>
                     <Separator/>
-                    <MenuItem Header="Close"/>
+                    <MenuItem Header="Close" Click="Exit_Click"/>
                 </MenuItem>
-                <MenuItem Header="Sorting">
-                    <MenuItem Header="Sort" Click="MenuItem_Click" />
-                    <MenuItem Header="Add Coupon" />
+                <MenuItem Header="Data">
+                    <MenuItem Header="Sort in x-led" Click="SortX_Click" />
+                    <MenuItem Header="Sort in y-led" Click="SortY_Click" />
                 </MenuItem>
-                <MenuItem Header="Remove" />
             </Menu>
             <StackPanel  Orientation="Horizontal" Background="WhiteSmoke" DockPanel.Dock="Right" HorizontalAlignment="Left">
                 <Canvas x:Name="drawCanvas" Background="White" Width="480" Height="470" HorizontalAlignment="Left" MouseMove="drawCanvas_MouseMove" Cursor="None" MouseLeave="drawCanvas_MouseLeave" MouseEnter="drawCanvas_MouseEnter">
-                    <!--
-                    <Line x:Name="line" Stroke="Blue" Visibility="Visible"/>
-                    <Polyline x:Name="polyline" Stroke="Red" Visibility="Collapsed"/>
-                    
-                    <Polygon x:Name="polygon" Stroke="Black" Visibility="Collapsed"/>
-                    <Polygon x:Name="filledPolygon" Fill="DarkBlue" Visibility="Collapsed"/>
-                    -->
                 </Canvas>
             </StackPanel>
             <StackPanel  Width="350" Orientation="Horizontal" Background="WhiteSmoke" DockPanel.Dock="Left" HorizontalAlignment="Left">
@@ -40,19 +32,17 @@
                         <Grid Margin="0,0,0,10" >
                             <Label Content="Number of devisions" Margin="10,40,177,85"/>
                             <Label Content="Interval value" Margin="10,70,177,57"/>
-
                             <Button x:Name="btnSettingsOk" Content="Ok" Click="btnSettingsOk_Click" Margin="23,117,176,-2" Height="34" VerticalAlignment="Top"/>
                             <Button Name="clearButton1" Content="Cancel" Click="clearButton_Click" Margin="161,117,0,0" RenderTransformOrigin="0.693,0.5" Height="34" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130"/>
-                            <TextBox x:Name="tbxNumDevX" Text="12" HorizontalAlignment="Left" Height="23" Margin="146,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="73"/>
+                            <TextBox x:Name="tbxNumDevX" Text="10" HorizontalAlignment="Left" Height="23" Margin="146,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="73"/>
                             <TextBox x:Name="tbxNumDevY" Text="10" HorizontalAlignment="Left" Height="23" Margin="238,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="68"/>
-                            <TextBox x:Name="tbxIntervalValX" Text="1" HorizontalAlignment="Left" Height="23" Margin="146,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="73"/>
-                            <TextBox x:Name="tbxIntervalValY" Text="100" HorizontalAlignment="Left" Height="23" Margin="238,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="68"/>
+                            <TextBox x:Name="tbxIntervalValX" Text="0,1" HorizontalAlignment="Left" Height="23" Margin="146,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="73"/>
+                            <TextBox x:Name="tbxIntervalValY" Text="0,1" HorizontalAlignment="Left" Height="23" Margin="238,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="68"/>
                             <Label Content="x - axis" Margin="149,10,79,118"/>
                             <Label Content="y - axis" Margin="240,10,10,119"/>
-                            <!--</StackPanel>-->
                         </Grid>
                     </GroupBox>
-                    <GroupBox x:Name="grbAddPoint" Grid.Row="1" Header="Add point" Height ="250" Margin="10,10,10,10">
+                    <GroupBox x:Name="grbAddPoint" Grid.Row="1" Header="Add point" Height ="250" Margin="10,10,10,10" IsEnabled="False">
                         <Grid Margin="0,0,0,0" >
                             <Label Content="x - coordinate" Margin="10,20,230,180"/>
                             <Label Content="y - coordinate" Margin="10,47,230,154"/>
