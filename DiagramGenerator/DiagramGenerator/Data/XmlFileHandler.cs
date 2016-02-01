@@ -4,10 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+ * Author:          Magnus Sundström
+ * Creation Date:   2015-02-01
+ * File:            XmlFileHandler.cs
+ */
+
 namespace DiagramGenerator
 {
+    /// <summary>
+    /// Class for handeling saving and opening the plot data.
+    /// </summary>
     class XmlFileHandler
     {
+        /// <summary>
+        /// Public method for saving the data to a xml-file.
+        /// </summary>
+        /// <param name="diagramData">This holds the data of the coordinatesystem and the plots.</param>
         public static void WriteXML(DiagramData diagramData)
         {
             Microsoft.Win32.SaveFileDialog dl1 = new Microsoft.Win32.SaveFileDialog();
@@ -25,6 +38,10 @@ namespace DiagramGenerator
             }
         }
 
+        /// <summary>
+        /// Public method for opening the xml-file with a file opener dialog.
+        /// </summary>
+        /// <returns>The coordinatesystem and the plots as one object.</returns>
         public static DiagramData ReadXML()
         {
             DiagramData diagramData = null;

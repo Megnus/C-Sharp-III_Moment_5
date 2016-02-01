@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Draw diagram" Height="522" Width="838" Name="mainWindow" ResizeMode="NoResize">
     <Grid>
-        <!-- http://wpftutorial.net/DockPanel.html -->
         <DockPanel>
             <Menu x:Name="mainMenu" DockPanel.Dock="Top">
                 <MenuItem Header="_File">
@@ -18,7 +17,7 @@
                 </MenuItem>
             </Menu>
             <StackPanel  Orientation="Horizontal" Background="WhiteSmoke" DockPanel.Dock="Right" HorizontalAlignment="Left">
-                <Canvas x:Name="drawCanvas" Background="White" Width="480" Height="470" HorizontalAlignment="Left" MouseMove="drawCanvas_MouseMove" Cursor="None" MouseLeave="drawCanvas_MouseLeave" MouseEnter="drawCanvas_MouseEnter">
+                <Canvas x:Name="canvas" Background="White" Width="480" Height="470" HorizontalAlignment="Left" MouseMove="drawCanvas_MouseMove" Cursor="None" MouseLeave="drawCanvas_MouseLeave" MouseEnter="drawCanvas_MouseEnter">
                 </Canvas>
             </StackPanel>
             <StackPanel  Width="350" Orientation="Horizontal" Background="WhiteSmoke" DockPanel.Dock="Left" HorizontalAlignment="Left">
@@ -28,7 +27,6 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <GroupBox x:Name="grbSettings" Grid.Row="0" Header="Settings" Margin="10,10,10,10">
-                        <!--<StackPanel>-->
                         <Grid Margin="0,0,0,10" >
                             <Label Content="Number of devisions" Margin="10,40,177,85"/>
                             <Label Content="Interval value" Margin="10,70,177,57"/>
@@ -52,12 +50,9 @@
                             <ListBox x:Name="lbxPoints" HorizontalAlignment="Left" Height="155" Margin="205,38,0,0" VerticalAlignment="Top" Width="100"/>
                             <Label Content="Points" Margin="230,5,48,175"/>
                             <Button Content="Clear diagram" Click="clearButton_Click" Margin="10,140,161,0" Height="34" VerticalAlignment="Top"/>
-
                         </Grid>
                     </GroupBox>
-
                 </Grid>
-
             </StackPanel>
         </DockPanel>
     </Grid>

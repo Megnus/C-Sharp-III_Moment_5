@@ -8,8 +8,17 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
+/*
+ * Author:          Magnus Sundström
+ * Creation Date:   2015-02-01
+ * File:            Trace.cs
+ */
+
 namespace DiagramGenerator
 {
+    /// <summary>
+    /// This class handles the tracer for the canvas.
+    /// </summary>
     class Trace
     {
         private Line xLine;
@@ -18,15 +27,23 @@ namespace DiagramGenerator
         private DiagramData diagramData;
         private TextBlock tracerText = new TextBlock();
 
+        /// <summary>
+        /// The constructor for the class. Here the member variables are initiated.
+        /// </summary>
+        /// <param name="canvas">The canvas which the plot is drawn.</param>
+        /// <param name="diagramData">The diagramdata holds the data of the coordinatesystem and the plot data.</param>
         public Trace(Canvas canvas, DiagramData diagramData)
         {
             this.canvas = canvas;
             this.diagramData = diagramData;
-
             xLine = CreateTraceLine();
             yLine = CreateTraceLine();
         }
 
+        /// <summary>
+        /// Initiates and creates the tracer lines.
+        /// </summary>
+        /// <returns></returns>
         private Line CreateTraceLine()
         {
             Line line = new Line();
@@ -45,13 +62,21 @@ namespace DiagramGenerator
             return line;
         }
 
-        public void SetCrossVisiblity(Visibility vis)
+        /// <summary>
+        /// Sets the visibility of the tracer lines.
+        /// </summary>
+        /// <param name="visibility">The visibility of the lines. Are used with "hidden" or visible.</param>
+        public void SetCrossVisiblity(Visibility visibility)
         {
-            xLine.Visibility = vis;
-            yLine.Visibility = vis;
-            tracerText.Visibility = vis;
+            xLine.Visibility = visibility;
+            yLine.Visibility = visibility;
+            tracerText.Visibility = visibility;
         }
 
+        /// <summary>
+        /// Sets the the coordinates for the tracer lines.
+        /// </summary>
+        /// <param name="point">The point of the origo of the lines.</param>
         public void SetTrace(Point point)
         {
             xLine.Y1 = xLine.Y2 = point.Y;
@@ -60,6 +85,10 @@ namespace DiagramGenerator
             SetText(point);
         }
 
+        /// <summary>
+        /// This method draws the text to the canvas and shows the coordinate value in text form.zs
+        /// </summary>
+        /// <param name="point">The point to be drawn as text.</param>
         private void SetText(Point point)
         {
             canvas.Children.Remove(tracerText);

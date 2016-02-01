@@ -6,29 +6,29 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
+/*
+ * Author:          Magnus Sundström
+ * Creation Date:   2015-02-01
+ * File:            DiagramData.cs
+ */
+
 namespace DiagramGenerator
 {
     /// <summary>
-    /// https://msdn.microsoft.com/en-us/library/ms172873.aspx
+    /// This class holds the data of the coordinatesystem and the plot data.
     /// </summary>
-
     public class DiagramData
     {
         public PointCollection coordinatePoints;
         public PointCollection canvasPoints;
-
         private Point lastCanvasPoint;
-
         private const int offsetX = 35;
         private const int offsetY = 35;
 
-        public double CanvasWidth { get; set; }
-        public double CanvasHeight { get; set; }
-        public double NumberOfDevisionsX { get; set; }
-        public double NumberOfDevisionsY { get; set; }
-        public double InterValValueX { get; set; }
-        public double InterValValueY { get; set; }
-
+        /// <summary>
+        /// The constructor of the class. This is where the pointcollection is created 
+        /// and the initiate values are set.
+        /// </summary>
         public DiagramData()
         {
             this.coordinatePoints = new PointCollection();
@@ -40,6 +40,56 @@ namespace DiagramGenerator
             InterValValueY = 0.1;
         }
 
+        /// <summary>
+        /// The property of the width of the canvas.
+        /// </summary>
+        public double CanvasWidth { get; set; }
+        
+        /// <summary>
+        /// The property of the height of the canvas.
+        /// </summary>
+        public double CanvasHeight { get; set; }
+        
+        /// <summary>
+        /// The property of the number of devisions for the x-axis.
+        /// </summary>
+        public double NumberOfDevisionsX { get; set; }
+        
+        /// <summary>
+        /// The property of the number of devisions for the y-axis.
+        /// </summary>
+        public double NumberOfDevisionsY { get; set; }
+        
+        /// <summary>
+        /// The property of the interval value for the x-axis.
+        /// </summary>
+        public double InterValValueX { get; set; }
+        
+        /// <summary>
+        /// The property of the interval value for the y-axis.
+        /// </summary>
+        public double InterValValueY { get; set; }
+
+        /// <summary>
+        /// The getter for the number of ploted points.
+        /// </summary>
+        public int NumberOfPoints
+        {
+            get { return coordinatePoints.Count; }
+        }
+
+        /// <summary>
+        /// The getter for the last point in the plot series.
+        /// </summary>
+        public Point LastCanvasPoint
+        {
+            get { return lastCanvasPoint; }
+        }
+
+        /// <summary>
+        /// Method for adding a new point to the pointcollection.
+        /// </summary>
+        /// <param name="point">The point to be added.</param>
         public void AddNewPoint(Point point)
         {
             lastCanvasPoint = Transpose(point);
@@ -47,33 +97,39 @@ namespace DiagramGenerator
             canvasPoints.Add(lastCanvasPoint);
         }
 
-        public int NumberOfPoints
-        {
-            get { return coordinatePoints.Count; }
-        }
-
-        public Point LastCanvasPoint
-        {
-            get { return lastCanvasPoint; }
-        }
-
+        /// <summary>
+        /// Returns a point for a specific index in the pointcollection.
+        /// </summary>
+        /// <param name="index">The index which represent the element in the pointcollection.</param>
+        /// <returns>The point in the specific index.</returns>
         public Point GetCanvasPoint(int index)
         {
             return canvasPoints[index];
         }
 
+        /// <summary>
+        /// Sorts the points in respect of the x-axis.
+        /// </summary>
         public void SortXPoints()
         {
             coordinatePoints = new PointCollection(coordinatePoints.OrderBy(p => p.X).ThenBy(p => p.Y).ToList());
             canvasPoints = new PointCollection(canvasPoints.OrderBy(p => p.X).ThenByDescending(p => p.Y).ToList());
         }
 
+        /// <summary>
+        /// Sorts the points in respect of the y-axis.
+        /// </summary>
         public void SortYPoints()
         {
             coordinatePoints = new PointCollection(coordinatePoints.OrderBy(p => p.Y).ThenBy(p => p.X).ToList());
             canvasPoints = new PointCollection(canvasPoints.OrderByDescending(p => p.Y).ThenBy(p => p.X).ToList());
         }
 
+        /// <summary>
+        /// Transposes a point from the coordinate system to the canvas coordinates.
+        /// </summary>
+        /// <param name="point">The point to transpose.</param>
+        /// <returns>The transposed point.</returns>
         private Point Transpose(Point point)
         {
             Point transposedPoint = new Point();
@@ -82,6 +138,11 @@ namespace DiagramGenerator
             return transposedPoint;
         }
 
+        /// <summary>
+        /// Reverse a point from the canvas to match the coordinate system.
+        /// </summary>
+        /// <param name="point">The point to reverse.</param>
+        /// <returns>The reversed point.</returns>
         public Point Reverse(Point point)
         {
             Point reversedPoint = new Point();
@@ -90,17 +151,28 @@ namespace DiagramGenerator
             return reversedPoint;
         }
 
+        /// <summary>
+        /// Clears the plot from all the points in the pointcollections.
+        /// </summary>
         public void ClearPoints()
         {
             coordinatePoints.Clear();
             canvasPoints.Clear();
         }
 
+        /// <summary>
+        /// Method for returning the pointcollection represented by the canvas.
+        /// </summary>
+        /// <returns>The pointcollection for the canvas.</returns>
         public PointCollection GetCanvasPoints()
         {
             return canvasPoints;
         }
 
+        /// <summary>
+        /// Method for returning the pointcollection represented by the coordinate system. 
+        /// </summary>
+        /// <returns>The pointcollection for the coordinate system.</returns>
         public PointCollection GetCoordinatePoints()
         {
             return coordinatePoints;
